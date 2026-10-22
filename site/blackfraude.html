@@ -60,9 +60,18 @@ a{color:inherit}
 
 /* manchete */
 .hero{padding-block:44px 28px}
-.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(44px,8.5vw,96px);line-height:.92;letter-spacing:-.005em;margin:0;max-width:15ch;text-wrap:balance;text-transform:uppercase}
-.hero p{max-width:60ch;color:var(--ink-2);font-size:18px;margin:20px 0 0}
-.hero p strong{color:var(--ink)}
+.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(44px,7.4vw,104px);line-height:.92;letter-spacing:-.005em;margin:0;text-wrap:balance;text-transform:uppercase}
+.hero-foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;margin-top:28px;align-items:start}
+.hero p{max-width:56ch;color:var(--ink-2);font-size:18px;margin:0}
+.picks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pick{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:10px;background:var(--card);border-left:6px solid var(--pc)}
+.pick:hover{outline:2px solid var(--ink)}
+.pick:focus-visible{outline:3px solid var(--tag)}
+.pick .l{font-size:13px;color:var(--ink-3)}
+.pick .v{font-family:var(--display);font-weight:900;font-size:44px;line-height:1;color:var(--pc)}
+.pick .nm{font-weight:600;font-size:15px;line-height:1.3}
+@media (max-width:760px){.hero-foot{grid-template-columns:1fr;gap:20px}}
+@media (max-width:380px){.picks{grid-template-columns:1fr}}
 
 /* filtros */
 .filters{display:flex;gap:8px;flex-wrap:wrap;padding-block:4px 18px}
@@ -178,7 +187,10 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 <main class="wrap">
   <section class="hero">
     <h1 id="headline">Preços de Black Friday, vigiados todos os dias</h1>
-    <p id="lede">Acompanhamos os posts de promoção nas redes sociais e comparamos o preço de hoje com o do começo de outubro.</p>
+    <div class="hero-foot">
+      <p id="lede">Acompanhamos os posts de promoção nas redes sociais e comparamos o preço de hoje com o do começo de outubro.</p>
+      <div class="picks" id="picks"></div>
+    </div>
   </section>
 
   <div class="sec-h"><h2>Por categoria</h2><p>Cada ponto é um produto. A barra mostra a variação típica (mediana) da categoria desde o começo de outubro. Toque numa categoria para ver os produtos dela.</p></div>
@@ -242,7 +254,10 @@ tick(); setInterval(tick,30000);
 const n={subiu:P.filter(p=>p.status==='subiu').length,caiu:P.filter(p=>p.status==='caiu').length,estavel:P.filter(p=>p.status==='estavel').length};
 document.getElementById('headline').textContent=`${n.subiu} de ${P.length} produtos já estão mais caros que em 1º de outubro`;
 const topUp=P[0];
-document.getElementById('lede').innerHTML=`É o movimento clássico antes da Black Friday: o preço sobe agora para o "desconto" parecer maior em 27 de novembro. O maior salto até aqui é o <strong>${esc(topUp.nome)}</strong>, ${pct(topUp.var)} desde o começo do mês. Abra um produto para ver o histórico e os posts de onde tiramos cada preço.`;
+document.getElementById('lede').textContent=`É o movimento clássico antes da Black Friday: o preço sobe agora para o "desconto" parecer maior em 27 de novembro. Todo dia lemos os posts de oferta nas redes e comparamos o menor preço anunciado com o do começo de outubro. Abra um produto para ver o histórico e os posts de onde tiramos cada preço.`;
+const low=P[P.length-1];
+document.getElementById('picks').innerHTML=[['Maior alta',topUp,'var(--up)'],['Maior queda',low,low.var<0?'var(--down)':'var(--flat)']]
+  .map(([l,p,c])=>`<button class="pick" data-id="${p.id}" style="--pc:${c}" aria-label="${l}: ${esc(p.nome)}, ${pct(p.var)}. Ver detalhes"><span class="l">${l} desde 1º/out</span><span class="v num">${pct(p.var)}</span><span class="nm">${esc(p.nome)}</span></button>`).join('');
 document.getElementById('n-todos').textContent=P.length;
 for(const k of ['subiu','caiu','estavel']) document.getElementById('n-'+k).textContent=n[k];
 
@@ -287,6 +302,7 @@ document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
 /* detalhe */
 const dlg=document.getElementById('dlg'), body=document.getElementById('dlg-body');
 document.getElementById('board').addEventListener('click',e=>{const b=e.target.closest('button[data-id]'); if(b) open(byId[b.dataset.id])});
+document.getElementById('picks').addEventListener('click',e=>{const b=e.target.closest('button[data-id]'); if(b) open(byId[b.dataset.id])});
 dlg.addEventListener('click',e=>{if(e.target===dlg) dlg.close()});
 function verdict(p){
   const r=BRL.format(p.ref), a=BRL.format(p.atual);
