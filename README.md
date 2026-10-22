@@ -1,6 +1,6 @@
-# BlackFraude
+# Monitor de Preços BF
 
-Acompanhamento diário do preço de 18 produtos muito procurados na Black Friday, de 1º de outubro a 30 de novembro de 2026. O preço vem de posts públicos de ofertas no X, coletados via Buzzmonitor. A pergunta que o painel responde: o desconto da Black Friday é real, ou o preço subiu antes para o "desconto" parecer maior?
+Acompanhamento diário do preço de 18 produtos muito procurados na Black Friday, de 1º de outubro a 30 de novembro de 2026. O preço vem de posts públicos de ofertas no X, coletados via Buzzmonitor. O painel mostra como o preço de cada produto evolui em relação ao começo de outubro.
 
 Painel: https://claude.ai/artifact/SfovXBwiovWXw3yYKW9qr6 (privado) e site público no Netlify, publicado a partir da pasta `site/` (configuração em `netlify.toml`).
 

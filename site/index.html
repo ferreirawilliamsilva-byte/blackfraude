@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Acompanhamento diário do preço de produtos em posts de oferta até a Black Friday 2026.">
-<meta property="og:title" content="BlackFraude">
+<meta property="og:title" content="Monitor de Preços BF">
 <meta property="og:description" content="Acompanhamento diário do preço de produtos em posts de oferta até a Black Friday 2026.">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
-<title>BlackFraude</title>
+<title>Monitor de Preços BF</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +47,7 @@ a{color:inherit}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--paper)}
 .top .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
 .logo{font-family:var(--display);font-weight:900;font-size:28px;letter-spacing:.01em;line-height:1;display:flex;align-items:baseline}
-.logo b{background:var(--tag);color:var(--tag-ink);padding:0 6px;margin-left:3px;transform:rotate(-2deg);display:inline-block}
+.logo b{background:var(--tag);color:var(--tag-ink);padding:0 6px;margin-left:6px;display:inline-block;border-radius:3px}
 .live{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--paper)}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 var(--live);animation:pulse 1.8s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--live) 70%,transparent)}70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
@@ -189,7 +189,7 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 
 <header class="top">
   <div class="wrap">
-    <div class="logo" aria-label="BlackFraude">Black<b>Fraude</b></div>
+    <div class="logo" aria-label="Monitor de Preços BF">Monitor de Preços<b>BF</b></div>
     <div class="live" aria-live="polite"><span class="dot" aria-hidden="true"></span><span><strong>Ao vivo</strong> <span class="muted" id="upd">atualizado hoje</span></span></div>
     <div class="count"><span class="big num" id="dleft">–</span><span id="dlabel">dias para a Black Friday</span></div>
   </div>
@@ -266,7 +266,7 @@ tick(); setInterval(tick,30000);
 const n={subiu:P.filter(p=>p.status==='subiu').length,caiu:P.filter(p=>p.status==='caiu').length,estavel:P.filter(p=>p.status==='estavel').length};
 document.getElementById('headline').textContent=`${n.subiu} de ${P.length} produtos já estão mais caros que em 1º de outubro`;
 const topUp=P[0];
-document.getElementById('lede').textContent=`É o movimento clássico antes da Black Friday: o preço sobe agora para o "desconto" parecer maior em 27 de novembro. Todo dia lemos os posts de oferta nas redes e comparamos o menor preço anunciado com o do começo de outubro. Abra um produto para ver o histórico e os posts de onde tiramos cada preço.`;
+document.getElementById('lede').textContent=`Todo dia lemos os posts de oferta nas redes e registramos o menor preço anunciado de cada produto. A comparação é sempre com o preço do começo de outubro, para mostrar como ele evolui até a Black Friday, em 27 de novembro. Abra um produto para ver o histórico e os posts de origem.`;
 const low=P[P.length-1];
 document.getElementById('picks').innerHTML=[['Maior alta',topUp,'var(--up)'],['Maior queda',low,low.var<0?'var(--down)':'var(--flat)']]
   .map(([l,p,c])=>`<button class="pick" data-id="${p.id}" style="--pc:${c}" aria-label="${l}: ${esc(p.nome)}, ${pct(p.var)}. Ver detalhes"><span class="l">${l} desde 1º/out</span><span class="v num">${pct(p.var)}</span><span class="nm">${esc(p.nome)}</span></button>`).join('');
@@ -292,7 +292,7 @@ function spark(p){
 }
 function claim(p){
   if(p.desconto_anunciado==null) return `Desde 1º de outubro: ${pct(p.var)}`;
-  return `Os posts prometem <s>${p.desconto_anunciado}% off</s>. Desde 1º de outubro: <b class="${cls(p)}">${pct(p.var)}</b>`;
+  return `Desconto anunciado nos posts: ${p.desconto_anunciado}%. Variação desde 1º de outubro: <b class="${cls(p)}">${pct(p.var)}</b>`;
 }
 let filtro='todos', catSel=null;
 function render(){
@@ -318,9 +318,9 @@ document.getElementById('picks').addEventListener('click',e=>{const b=e.target.c
 dlg.addEventListener('click',e=>{if(e.target===dlg) dlg.close()});
 function verdict(p){
   const r=BRL.format(p.ref), a=BRL.format(p.atual);
-  if(p.status==='subiu') return `No começo de outubro, o ${esc(p.nome)} aparecia por <b>${r}</b>. Hoje o menor preço nos posts é <b>${a}</b>, <b class="up">${pct(p.var)}</b>. Se ele "cair" para perto de ${r} na Black Friday, não é desconto: é só a volta ao preço de antes.`;
-  if(p.status==='caiu') return `No começo de outubro, o ${esc(p.nome)} aparecia por <b>${r}</b>. Hoje o menor preço nos posts é <b>${a}</b>, <b class="down">${pct(p.var)}</b>. Por enquanto, a queda é real.`;
-  return `O ${esc(p.nome)} segue perto do preço do começo de outubro: <b>${r}</b> antes, <b>${a}</b> hoje. Na Black Friday, só vale se ficar abaixo de ${r}.`;
+  if(p.status==='subiu') return `No começo de outubro, o ${esc(p.nome)} aparecia por <b>${r}</b>. Hoje o menor preço nos posts é <b>${a}</b>, <b class="up">${pct(p.var)}</b>. Na Black Friday, vale comparar a oferta com o preço de referência de ${r}.`;
+  if(p.status==='caiu') return `No começo de outubro, o ${esc(p.nome)} aparecia por <b>${r}</b>. Hoje o menor preço nos posts é <b>${a}</b>, <b class="down">${pct(p.var)}</b>, abaixo do preço de referência.`;
+  return `O ${esc(p.nome)} segue perto do preço do começo de outubro: <b>${r}</b> antes, <b>${a}</b> hoje. Na Black Friday, vale comparar a oferta com essa referência.`;
 }
 function chart(p,cw){
   const W=Math.max(300,Math.round(cw||700)),H=W<500?220:250,L=40,R=10,T=16,B=28;
@@ -404,13 +404,13 @@ const MET=[
  ['Preço de referência','A <b>mediana dos preços do dia entre 1º e 15 de outubro</b>, antes do aquecimento da Black Friday. É a régua para tudo na página.'],
  ['Preço agora','A mediana dos três últimos dias com preço. Usar três dias evita que uma oferta-relâmpago isolada mude o resultado.'],
  ['Variação','(preço agora − referência) ÷ referência. Acima de +5% o produto entra em <b>mais caro</b>, abaixo de −5% em <b>mais barato</b>, e entre os dois em <b>sem mudança</b>.'],
- ['Desconto prometido','A mediana do desconto anunciado nos posts que trazem preço "de" e "por": (de − por) ÷ de. Ele é comparado com a variação real para mostrar quando o "de" está inflado.'],
+ ['Desconto prometido','A mediana do desconto anunciado nos posts que trazem preço "de" e "por": (de − por) ÷ de. Ele é mostrado ao lado da variação medida desde o começo de outubro, para que as duas informações possam ser comparadas.'],
  ['Categorias','A variação da categoria é a mediana das variações dos seus produtos. Os pontos mostram cada produto separadamente.'],
  ['Poucos dados','Produtos com preço em menos de 12 dias recebem o selo "poucos dados". A variação deles pode oscilar mais.'],
  ['Limites','Os preços são os anunciados nos posts e podem mudar na loja, depender de cupom, frete ou forma de pagamento. Só o X é lido por enquanto. Não há comparação com 2025: a base pública tem poucos posts com preço da Black Friday passada para comparar os mesmos modelos.'],
 ];
 document.getElementById('method-dl').innerHTML=MET.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join('');
-document.getElementById('foot').innerHTML=`BlackFraude lê ${D.total_ofertas.toLocaleString('pt-BR')} ofertas publicadas em posts públicos de redes sociais (coletados via Buzzmonitor) desde 1º de outubro, com dados até ${dm(D.coleta_ate.replace(/-/g,''))}. Os preços são os anunciados nos posts e podem mudar na loja. Veja a <a href="#metodologia">metodologia</a>.`;
+document.getElementById('foot').innerHTML=`O Monitor de Preços BF lê ${D.total_ofertas.toLocaleString('pt-BR')} ofertas publicadas em posts públicos de redes sociais (coletados via Buzzmonitor) desde 1º de outubro, com dados até ${dm(D.coleta_ate.replace(/-/g,''))}. Os preços são os anunciados nos posts e podem mudar na loja. Veja a <a href="#metodologia">metodologia</a>.`;
 })();
 </script>
 

@@ -1,4 +1,4 @@
-# Rotina diária do agente BlackFraude
+# Rotina diária do agente do Monitor de Preços BF
 
 Este arquivo é a instrução da tarefa agendada que roda todo dia às 8h (horário de Brasília) de 23/10 a 01/12/2026. Siga os passos na ordem. Se um passo falhar, pare e diga no resumo final exatamente qual passo falhou e por quê.
 
