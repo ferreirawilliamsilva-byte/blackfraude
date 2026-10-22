@@ -1,0 +1,9 @@
+# Publica a pasta site/ a cada push em main (não há etapa de build: o HTML já vem pronto da coleta diária)
+[build]
+  publish = "site"
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

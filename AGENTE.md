@@ -35,7 +35,7 @@ Salve a resposta **completa e sem alterações** de cada busca em `raw/AAAAMMDD/
 ```bash
 python3 scripts/extract.py "raw/**/*"     # extrai preços e acumula em data/ofertas_brutas.json e data/ofertas.json
 python3 scripts/build.py                  # recalcula variações, categorias e data/data.json (hora atual de Brasília)
-python3 scripts/render.py                 # gera site/blackfraude.html
+python3 scripts/render.py                 # gera site/blackfraude.html (Artifact) e site/index.html (Netlify)
 ```
 
 Confira na saída do `build.py` que `coleta até` passou a ser ontem e que o número de ofertas não diminuiu. Se diminuiu, algo deu errado: não publique.
@@ -48,7 +48,7 @@ git commit -m "Coleta diária: dados até AAAA-MM-DD"
 git push origin main
 ```
 
-A pasta `raw/` fica fora do git (está no `.gitignore`).
+A pasta `raw/` fica fora do git (está no `.gitignore`). O push em `main` também atualiza o site no Netlify, que publica a pasta `site/` automaticamente.
 
 ## 5. Atualizar o painel
 
