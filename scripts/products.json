@@ -1,0 +1,182 @@
+[
+ {
+  "id": "iphone-17",
+  "nome": "iPhone 17 256GB",
+  "categoria": "Celulares",
+  "query": "iphone 17",
+  "inc": "iphone\\s*17(?!\\s*(pro|air|e\\b|max))[^\\n]{0,40}?256\\s*gb",
+  "exc": "capa|case|pel[íi]cula|carregador|cabo|usado|seminovo|vitrine|recondicionado",
+  "min": 4500,
+  "max": 9500
+ },
+ {
+  "id": "galaxy-s26-ultra",
+  "nome": "Galaxy S26 Ultra 256GB",
+  "categoria": "Celulares",
+  "query": "galaxy s26",
+  "inc": "s26\\s*ultra[^\\n]{0,60}?256\\s*gb",
+  "exc": "capa|case|pel[íi]cula|carregador|usado|seminovo|recondicionado",
+  "min": 5000,
+  "max": 12000
+ },
+ {
+  "id": "galaxy-a37",
+  "nome": "Galaxy A37 128GB",
+  "categoria": "Celulares",
+  "query": "galaxy a37",
+  "inc": "galaxy\\s*a37[^\\n]{0,30}?128\\s*gb",
+  "exc": "capa|case|pel[íi]cula|usado|recondicionado",
+  "min": 1100,
+  "max": 3200
+ },
+ {
+  "id": "ps5-slim-digital",
+  "nome": "PS5 Slim Digital",
+  "categoria": "Games",
+  "query": "ps5 slim",
+  "inc": "(console|playstation)[^\\n]{0,30}?(ps5|playstation\\s*5|playstation®\\s*5)[^\\n]{0,25}?digital|ps5\\s*slim[^\\n]{0,15}digital",
+  "exc": "controle|dualsense|headset|jogo|game\\b|capa|suporte|base|pro\\b|vr",
+  "min": 2900,
+  "max": 5500
+ },
+ {
+  "id": "switch-2",
+  "nome": "Nintendo Switch 2",
+  "categoria": "Games",
+  "query": "nintendo switch 2",
+  "inc": "nintendo\\s*switch\\s*2\\b",
+  "exc": "jogo|cartucho|case|bolsa|pel[íi]cula|controle|joy-?con|pro controller|cart[ãa]o|capa|carregador|dock",
+  "min": 2800,
+  "max": 5600
+ },
+ {
+  "id": "switch-oled",
+  "nome": "Nintendo Switch OLED",
+  "categoria": "Games",
+  "query": "nintendo switch oled",
+  "inc": "nintendo\\s*switch\\s*oled",
+  "exc": "jogo|cartucho|case|bolsa|pel[íi]cula|controle|joy-?con|capa|carregador|dock",
+  "min": 1700,
+  "max": 3300
+ },
+ {
+  "id": "tv-philco-43",
+  "nome": "Smart TV Philco 43\" Roku",
+  "categoria": "TVs",
+  "query": "philco roku",
+  "inc": "smart\\s*tv\\s*43[\"”″']?\\s*philco\\s*roku|philco[^\\n]{0,25}43[\"”″']?[^\\n]{0,25}roku",
+  "exc": "suporte|controle|usado",
+  "min": 900,
+  "max": 2600
+ },
+ {
+  "id": "acer-nitro-v15",
+  "nome": "Notebook Gamer Acer Nitro V15 i5",
+  "categoria": "Informática",
+  "query": "acer nitro",
+  "inc": "nitro\\s*v\\s*15[^\\n]{0,60}?i5|nitro\\s*v15[^\\n]{0,60}?i5",
+  "exc": "mochila|capa|teclado|mouse|usado",
+  "min": 3000,
+  "max": 6500
+ },
+ {
+  "id": "ipad-11-a16",
+  "nome": "iPad 11 (A16) 128GB",
+  "categoria": "Informática",
+  "query": "ipad",
+  "inc": "ipad[^\\n]{0,20}?a16[^\\n]{0,40}?128\\s*gb|ipad\\s*11[^\\n]{0,10}?\\(?a16\\)?",
+  "exc": "capa|case|pel[íi]cula|teclado|caneta|pencil|usado|air|pro\\b",
+  "min": 2000,
+  "max": 4200
+ },
+ {
+  "id": "apple-watch-s11",
+  "nome": "Apple Watch Series 11 GPS 42mm",
+  "categoria": "Áudio e relógios",
+  "query": "apple watch series 11",
+  "inc": "apple\\s*watch\\s*(series\\s*)?11\\b[^\\n]{0,80}?42\\s*mm",
+  "exc": "capa|case|pel[íi]cula|carregador|cellular|celular",
+  "min": 2300,
+  "max": 5500
+ },
+ {
+  "id": "airpods-4",
+  "nome": "AirPods 4",
+  "categoria": "Áudio e relógios",
+  "query": "airpods",
+  "inc": "airpods\\s*4\\b",
+  "exc": "cancelamento|anc\\b|capa|case|pel[íi]cula|ponteira",
+  "min": 700,
+  "max": 1500
+ },
+ {
+  "id": "jbl-flip-7",
+  "nome": "JBL Flip 7",
+  "categoria": "Áudio e relógios",
+  "query": "jbl flip 7",
+  "inc": "jbl\\s*flip\\s*7",
+  "exc": "capa|case|bolsa",
+  "min": 450,
+  "max": 1200
+ },
+ {
+  "id": "airfryer-philco-65",
+  "nome": "Air Fryer Philco 6,5L Visor Glass",
+  "categoria": "Casa",
+  "query": "air fryer philco",
+  "inc": "(air\\s*fryer|fritadeira)[^\\n]{0,30}?philco[^\\n]{0,20}?6[,.]5\\s*l|philco[^\\n]{0,30}?6[,.]5\\s*l[^\\n]{0,20}visor",
+  "exc": "forma|cesto de silicone|papel|tapete",
+  "min": 250,
+  "max": 750
+ },
+ {
+  "id": "airfryer-mondial-dual",
+  "nome": "Air Fryer Mondial Dual 8L",
+  "categoria": "Casa",
+  "query": "air fryer mondial",
+  "inc": "(air\\s*fryer|fritadeira)[^\\n]{0,40}?(dual|duplo)[^\\n]{0,20}?8\\s*l[^\\n]{0,10}?mondial|mondial[^\\n]{0,30}?(dual|duplo)[^\\n]{0,20}?8\\s*l",
+  "exc": "forma|papel|tapete",
+  "min": 300,
+  "max": 900
+ },
+ {
+  "id": "ar-9000-inverter",
+  "nome": "Ar-condicionado Philco 9.000 BTUs Inverter",
+  "categoria": "Casa",
+  "query": "ar condicionado",
+  "inc": "split\\s*9\\.?000\\s*btus\\s*eco\\s*inverter",
+  "exc": "suporte|instala[çc][ãa]o|controle",
+  "min": 1400,
+  "max": 3500
+ },
+ {
+  "id": "lavar-14kg-jetclean",
+  "nome": "Lavadora Electrolux 14,5kg Jet&Clean",
+  "categoria": "Casa",
+  "query": "lavadora OR máquina de lavar",
+  "inc": "lee15\\b|lavar[^\\n]{0,15}?14[,.]5\\s*kg[^\\n]{0,40}?jet\\s*(&amp;(amp;)?|&|e)?\\s*clean",
+  "exc": "capa|suporte",
+  "min": 1300,
+  "max": 3800
+ },
+ {
+  "id": "club-de-nuit",
+  "nome": "Perfume Club de Nuit Intense 105ml",
+  "categoria": "Beleza",
+  "query": "club de nuit",
+  "inc": "club\\s*de\\s*nuit\\s*intense[^\\n]{0,30}?105\\s*ml",
+  "exc": "decant|amostra|miniatura",
+  "min": 110,
+  "max": 330
+ },
+ {
+  "id": "la-vie-est-belle-30",
+  "nome": "Perfume La Vie Est Belle EDP 30ml",
+  "categoria": "Beleza",
+  "query": "la vie est belle",
+  "inc": "la\\s*vie\\s*est\\s*belle[^\\n]{0,40}?30\\s*ml",
+  "exc": "decant|amostra|miniatura|intensement|iris|rosa extraordin|l'elixir|elixir",
+  "min": 220,
+  "max": 600
+ }
+]

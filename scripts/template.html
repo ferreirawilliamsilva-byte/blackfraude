@@ -1,0 +1,387 @@
+<title>BlackFraude</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: quadro de cotações. Fita de ofertas ao vivo no topo, uma frase-manchete e uma lista de produtos ordenada do que mais subiu ao que mais caiu. */
+:root{
+  --paper:#F4F5F1; --card:#FFFFFF; --ink:#000000; --ink-2:#4A4C46; --ink-3:#7A7D74; --rule:#DCDED6;
+  --tag:#FFD23F; --tag-ink:#000000;
+  --up:#C2410C; --down:#1D5FBF; --flat:#7A7D74;
+  --up-soft:#FBE4D8; --down-soft:#DEE8F7;
+  --live:#D61F1F;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0C0D0B; --card:#151613; --ink:#F4F5F1; --ink-2:#B9BCB2; --ink-3:#8A8D83; --rule:#2A2C27;
+  --tag:#FFD23F; --tag-ink:#000000;
+  --up:#E8652C; --down:#4F8FF0; --flat:#8A8D83;
+  --up-soft:#3A1E10; --down-soft:#132544; --live:#FF4D4D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0C0D0B; --card:#151613; --ink:#F4F5F1; --ink-2:#B9BCB2; --ink-3:#8A8D83; --rule:#2A2C27;
+  --tag:#FFD23F; --tag-ink:#000000;
+  --up:#E8652C; --down:#4F8FF0; --flat:#8A8D83;
+  --up-soft:#3A1E10; --down-soft:#132544; --live:#FF4D4D; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--tag);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* barra superior */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--paper)}
+.top .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-weight:900;font-size:28px;letter-spacing:.01em;line-height:1;display:flex;align-items:baseline}
+.logo b{background:var(--tag);color:var(--tag-ink);padding:0 6px;margin-left:3px;transform:rotate(-2deg);display:inline-block}
+.live{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--paper)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 var(--live);animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--live) 70%,transparent)}70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.live strong{font-weight:700}
+.live .muted{opacity:.7}
+.count{margin-left:auto;font-size:14px;text-align:right}
+.count .big{font-family:var(--display);font-weight:800;font-size:24px;line-height:1;color:var(--tag);margin-right:4px}
+
+/* fita de ofertas */
+.tape{background:var(--tag);color:var(--tag-ink);overflow:hidden;border-bottom:2px solid var(--ink)}
+.tape-track{display:flex;width:max-content;animation:roll 90s linear infinite}
+.tape:hover .tape-track{animation-play-state:paused}
+@keyframes roll{to{transform:translateX(-50%)}}
+.tape-item{display:flex;align-items:baseline;gap:8px;padding:9px 22px;font-size:14px;white-space:nowrap;border-right:1px solid color-mix(in srgb,var(--tag-ink) 25%,transparent);text-decoration:none}
+.tape-item:hover{text-decoration:underline}
+.tape-item .p{font-weight:700}
+.tape-item .t{opacity:.7}
+@media (prefers-reduced-motion:reduce){.tape{overflow-x:auto}.tape-track{animation:none}.dot{animation:none}}
+
+/* manchete */
+.hero{padding-block:44px 28px}
+.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(44px,8.5vw,96px);line-height:.92;letter-spacing:-.005em;margin:0;max-width:15ch;text-wrap:balance;text-transform:uppercase}
+.hero p{max-width:60ch;color:var(--ink-2);font-size:18px;margin:20px 0 0}
+.hero p strong{color:var(--ink)}
+
+/* filtros */
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding-block:4px 18px}
+.chip{appearance:none;border:2px solid var(--ink);background:transparent;color:var(--ink);font:inherit;font-weight:600;font-size:15px;padding:7px 14px;border-radius:999px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.chip .n{font-family:var(--display);font-weight:800;font-size:19px;line-height:1}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chip .sw{width:10px;height:10px;border-radius:2px}
+
+/* quadro */
+.board{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.row{border-bottom:1px solid var(--rule)}
+.row button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 140px 132px;gap:20px;align-items:center;padding:16px 8px}
+.row button:hover{background:var(--card)}
+.row button:focus-visible{outline:3px solid var(--tag);outline-offset:-3px}
+.name{min-width:0}
+.name .cat{font-size:13px;color:var(--ink-3)}
+.name h3{margin:0;font-size:18px;font-weight:600;line-height:1.25}
+.name .claim{margin-top:4px;font-size:14px;color:var(--ink-2)}
+.claim s{text-decoration-thickness:2px}
+.flag{display:inline-block;font-size:12px;font-weight:600;color:var(--ink-2);border:1px dashed var(--ink-3);border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:2px}
+.spark{width:140px;height:44px;display:block}
+.var{text-align:right;font-family:var(--display);font-weight:900;font-size:40px;line-height:.9}
+.var small{display:block;font-family:var(--body);font-weight:500;font-size:13px;line-height:1.3;color:var(--ink-3);margin-top:4px}
+.up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--flat)}
+
+@media (max-width:640px){
+  .row button{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name var" "spark spark";gap:8px 14px}
+  .name{grid-area:name}.var{grid-area:var;font-size:34px}.spark{grid-area:spark;width:100%;height:40px}
+}
+
+/* seções */
+.sec-h{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin:36px 0 14px}
+.sec-h h2{font-family:var(--display);font-weight:900;font-size:34px;line-height:1;margin:0;text-transform:uppercase}
+.sec-h p{margin:0;color:var(--ink-2);font-size:15px;max-width:60ch}
+
+/* categorias */
+.cats{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.cat-row{border-bottom:1px solid var(--rule)}
+.cat-row button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:12px 8px}
+.cat-row button:hover{background:var(--card)}
+.cat-row button:focus-visible{outline:3px solid var(--tag);outline-offset:-3px}
+.cat-row button[aria-pressed="true"]{background:var(--card);box-shadow:inset 4px 0 0 var(--tag)}
+.cat-name{font-weight:600;font-size:17px;line-height:1.25}
+.cat-name small{display:block;font-weight:400;font-size:13px;color:var(--ink-3)}
+.strip{position:relative;height:46px;margin:0 12px}
+.strip .base{position:absolute;left:0;right:0;top:22px;height:1px;background:var(--rule)}
+.strip .zero{position:absolute;top:4px;bottom:4px;width:2px;margin-left:-1px;background:var(--ink)}
+.strip .bar{position:absolute;top:15px;height:16px;border-radius:3px;opacity:.9}
+.strip .pt{position:absolute;top:17px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--paper);border:1.5px solid var(--ink)}
+.axis-note{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-3);padding:8px 8px 0 228px}
+@media (max-width:640px){.cat-row button{grid-template-columns:1fr;gap:4px}.axis-note{padding-left:8px}}
+.catfilter{font-size:14px;color:var(--ink-2);margin:-6px 0 12px;display:flex;gap:8px;align-items:center}
+.catfilter button{all:unset;cursor:pointer;font-weight:600;text-decoration:underline}
+
+/* metodologia */
+.method{padding-block:12px 8px}
+.method dl{display:grid;grid-template-columns:220px minmax(0,1fr);gap:0;margin:0;border-top:2px solid var(--ink)}
+.method dt,.method dd{padding:14px 8px;border-bottom:1px solid var(--rule);margin:0}
+.method dt{font-weight:700}
+.method dd{color:var(--ink-2);max-width:72ch}
+.method dd b{color:var(--ink)}
+@media (max-width:640px){.method dl{grid-template-columns:1fr}.method dt{border-bottom:0;padding-bottom:0}}
+.stale .dot{background:var(--ink-3);animation:none}
+
+/* como funciona */
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;padding-block:48px 16px}
+.how h2{font-family:var(--display);font-weight:800;font-size:26px;line-height:1.05;margin:0 0 8px;text-transform:uppercase}
+.how p{margin:0;color:var(--ink-2);font-size:15px;max-width:42ch}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+footer{padding-block:28px 48px;color:var(--ink-3);font-size:13px;border-top:1px solid var(--rule);margin-top:32px}
+
+/* detalhe */
+dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(760px,calc(100vw - 24px));max-height:calc(100dvh - 24px);border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+.dlg{padding:24px;display:grid;gap:18px}
+.dlg header{display:flex;gap:16px;align-items:flex-start}
+.dlg header h2{margin:0;font-size:22px;line-height:1.2;font-weight:700}
+.dlg header .cat{font-size:13px;color:var(--ink-3)}
+.close{all:unset;cursor:pointer;margin-left:auto;font-size:15px;font-weight:600;border:2px solid var(--ink);border-radius:999px;padding:4px 14px}
+.close:focus-visible{outline:3px solid var(--tag)}
+.verdict{font-size:18px;line-height:1.45;max-width:58ch;margin:0}
+.verdict b{font-weight:700}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fact{background:var(--card);border-radius:8px;padding:12px 14px}
+.fact .l{font-size:13px;color:var(--ink-3)}
+.fact .v{font-family:var(--display);font-weight:800;font-size:28px;line-height:1.1}
+.fact .s{font-size:12px;color:var(--ink-3)}
+@media (max-width:560px){.facts{grid-template-columns:1fr 1fr}.fact:last-child{grid-column:1/-1}}
+.chartbox{position:relative}
+.chartbox svg{width:100%;height:auto;display:block;overflow:visible}
+.chartbox text{font-family:var(--body);font-size:11px;fill:var(--ink-3)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);font-size:13px;line-height:1.35;padding:8px 10px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-110%)}
+.tip[hidden]{display:none}
+.offers h3{margin:0 0 6px;font-size:15px}
+.offers ul{list-style:none;margin:0;padding:0}
+.offers li{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:4px 12px;align-items:baseline;padding:9px 0;border-top:1px solid var(--rule);font-size:15px}
+.offers .pr{font-weight:700}
+.offers .who{min-width:0}
+.offers .meta{display:block;color:var(--ink-3);font-size:13px}
+.offers a{font-size:14px;font-weight:600}
+.note{font-size:13px;color:var(--ink-3);margin:0}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="logo" aria-label="BlackFraude">Black<b>Fraude</b></div>
+    <div class="live" aria-live="polite"><span class="dot" aria-hidden="true"></span><span><strong>Ao vivo</strong> <span class="muted" id="upd">atualizado hoje</span></span></div>
+    <div class="count"><span class="big num" id="dleft">–</span><span id="dlabel">dias para a Black Friday</span></div>
+  </div>
+</header>
+<div class="tape" aria-label="Últimas ofertas encontradas nas redes"><div class="tape-track" id="tape"></div></div>
+
+<main class="wrap">
+  <section class="hero">
+    <h1 id="headline">Preços de Black Friday, vigiados todos os dias</h1>
+    <p id="lede">Acompanhamos os posts de promoção nas redes sociais e comparamos o preço de hoje com o do começo de outubro.</p>
+  </section>
+
+  <div class="sec-h"><h2>Por categoria</h2><p>Cada ponto é um produto. A barra mostra a variação típica (mediana) da categoria desde o começo de outubro. Toque numa categoria para ver os produtos dela.</p></div>
+  <ol class="cats" id="cats"></ol>
+  <div class="axis-note"><span>← mais barato que em 1º/out</span><span>mais caro →</span></div>
+
+  <div class="sec-h"><h2>Por produto</h2><p>Do que mais subiu ao que mais caiu.</p></div>
+  <div class="catfilter" id="catfilter" hidden></div>
+  <div class="filters" role="group" aria-label="Filtrar produtos">
+    <button class="chip" id="f-todos" aria-pressed="true" data-f="todos">Todos <span class="n num" id="n-todos"></span></button>
+    <button class="chip" id="f-subiu" aria-pressed="false" data-f="subiu"><span class="sw" style="background:var(--up)"></span>Mais caros <span class="n num" id="n-subiu"></span></button>
+    <button class="chip" id="f-caiu" aria-pressed="false" data-f="caiu"><span class="sw" style="background:var(--down)"></span>Mais baratos <span class="n num" id="n-caiu"></span></button>
+    <button class="chip" id="f-estavel" aria-pressed="false" data-f="estavel"><span class="sw" style="background:var(--flat)"></span>Sem mudança <span class="n num" id="n-estavel"></span></button>
+  </div>
+
+  <ol class="board" id="board"></ol>
+
+  <section class="method" id="metodologia" aria-labelledby="met-h">
+    <div class="sec-h"><h2 id="met-h">Metodologia</h2><p>Como cada número desta página é calculado.</p></div>
+    <dl id="method-dl"></dl>
+  </section>
+  <footer id="foot"></footer>
+</main>
+
+<dialog id="dlg" aria-labelledby="dlg-title"><div class="dlg" id="dlg-body"></div></dialog>
+
+<script id="bf-data" type="application/json">/*DATA*/</script>
+<script>
+(function(){
+const D=JSON.parse(document.getElementById('bf-data').textContent);
+const P=D.produtos.slice().sort((a,b)=>b.var-a.var);
+const byId=Object.fromEntries(P.map(p=>[p.id,p]));
+const BRL=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+const pct=v=>{const r=Math.round(v);return (r>0?'+':r<0?'−':'')+Math.abs(r)+'%'};
+const ymd=s=>new Date(+s.slice(0,4),+s.slice(4,6)-1,+s.slice(6,8));
+const dm=s=>s.slice(6,8)+'/'+s.slice(4,6);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cls=p=>p.status==='subiu'?'up':p.status==='caiu'?'down':'flat';
+const BF=new Date(D.black_friday+'T00:00:00-03:00');
+const INI=new Date(D.inicio+'T00:00:00-03:00'), FIM=new Date(D.fim+'T00:00:00-03:00');
+
+/* ao vivo: relógio de atualização e contagem regressiva */
+function tick(){
+  const now=new Date(), upd=new Date(D.atualizado_em);
+  const mins=Math.max(0,Math.round((now-upd)/60000));
+  const ago=mins<60?`há ${mins} min`:mins<1440?`há ${Math.round(mins/60)} h`:`há ${Math.round(mins/1440)} dia(s)`;
+  // próxima coleta: todo dia às 8h (Brasília)
+  const brt=new Date(now.getTime()-3*3600e3); const next=new Date(Date.UTC(brt.getUTCFullYear(),brt.getUTCMonth(),brt.getUTCDate(),11,0));
+  if(next<=now) next.setUTCDate(next.getUTCDate()+1);
+  const left=Math.round((next-now)/60000);
+  document.getElementById('upd').textContent=`atualizado ${ago} · próxima coleta em ${Math.floor(left/60)}h${String(left%60).padStart(2,'0')}`;
+  const days=Math.ceil((BF-now)/86400e3);
+  const dl=document.getElementById('dleft'), lab=document.getElementById('dlabel');
+  if(days>0){dl.textContent=days;lab.textContent=days===1?'dia para a Black Friday':'dias para a Black Friday'}
+  else if(now<FIM){dl.textContent='Hoje';lab.textContent='é semana de Black Friday'}
+  else{dl.textContent='';lab.textContent='Acompanhamento encerrado'}
+}
+tick(); setInterval(tick,30000);
+
+/* manchete */
+const n={subiu:P.filter(p=>p.status==='subiu').length,caiu:P.filter(p=>p.status==='caiu').length,estavel:P.filter(p=>p.status==='estavel').length};
+document.getElementById('headline').textContent=`${n.subiu} de ${P.length} produtos já estão mais caros que em 1º de outubro`;
+const topUp=P[0];
+document.getElementById('lede').innerHTML=`É o movimento clássico antes da Black Friday: o preço sobe agora para o "desconto" parecer maior em 27 de novembro. O maior salto até aqui é o <strong>${esc(topUp.nome)}</strong>, ${pct(topUp.var)} desde o começo do mês. Abra um produto para ver o histórico e os posts de onde tiramos cada preço.`;
+document.getElementById('n-todos').textContent=P.length;
+for(const k of ['subiu','caiu','estavel']) document.getElementById('n-'+k).textContent=n[k];
+
+/* fita */
+const feed=D.feed.map(o=>`<a class="tape-item" href="${esc(o.link)}" target="_blank" rel="noopener"><span>${esc(byId[o.produto]?.nome)}</span><span class="p num">${BRL.format(o.por)}</span><span class="t">${dm(o.data)} ${o.hora.slice(0,2)}:${o.hora.slice(2)}</span></a>`).join('');
+document.getElementById('tape').innerHTML=feed+feed.replace(/<a /g,'<a aria-hidden="true" tabindex="-1" ');
+
+/* sparkline */
+function spark(p){
+  const s=p.serie, W=140,H=44,pad=4;
+  const t0=ymd(s[0].d), t1=ymd(s[s.length-1].d), span=Math.max(1,t1-t0);
+  const vs=s.map(x=>x.var), lo=Math.min(0,...vs), hi=Math.max(0,...vs), r=Math.max(hi-lo,8);
+  const x=d=>pad+(ymd(d)-t0)/span*(W-2*pad), y=v=>pad+(hi+(r-(hi-lo))/2-v)/r*(H-2*pad);
+  const pts=s.map(q=>`${x(q.d).toFixed(1)},${y(q.var).toFixed(1)}`);
+  const last=s[s.length-1], c=`var(--${cls(p)==='flat'?'flat':cls(p)})`;
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+    <line x1="0" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/>
+    <polyline points="${pts.join(' ')}" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <circle cx="${x(last.d)}" cy="${y(last.var)}" r="3.5" fill="${c}" stroke="var(--paper)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function claim(p){
+  if(p.desconto_anunciado==null) return `Desde 1º de outubro: ${pct(p.var)}`;
+  return `Os posts prometem <s>${p.desconto_anunciado}% off</s>. Desde 1º de outubro: <b class="${cls(p)}">${pct(p.var)}</b>`;
+}
+let filtro='todos', catSel=null;
+function render(){
+  const list=P.filter(p=>(filtro==='todos'||p.status===filtro)&&(!catSel||p.categoria===catSel));
+  const cf=document.getElementById('catfilter');
+  if(catSel){cf.hidden=false;cf.innerHTML=`Mostrando só ${esc(catSel)} <button id="clearcat">ver todas as categorias</button>`;document.getElementById('clearcat').onclick=()=>setCat(null)} else cf.hidden=true;
+  if(!list.length){document.getElementById('board').innerHTML='<li class="row" style="padding:16px 8px;color:var(--ink-2)">Nenhum produto desta categoria neste filtro. Escolha "Todos".</li>';return}
+  document.getElementById('board').innerHTML=list.map(p=>`<li class="row"><button data-id="${p.id}" aria-label="${esc(p.nome)}: ${pct(p.var)} desde 1º de outubro. Ver detalhes">
+    <div class="name"><div class="cat">${esc(p.categoria)}</div><h3>${esc(p.nome)}${p.poucos_dados?'<span class="flag">poucos dados</span>':''}</h3><div class="claim">${claim(p)}</div></div>
+    ${spark(p)}
+    <div class="var num ${cls(p)}">${pct(p.var)}<small>${p.status==='subiu'?'mais caro':p.status==='caiu'?'mais barato':'quase igual'}</small></div>
+  </button></li>`).join('');
+}
+render();
+document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
+  filtro=b.dataset.f; document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',String(c===b))); render();
+}));
+
+/* detalhe */
+const dlg=document.getElementById('dlg'), body=document.getElementById('dlg-body');
+document.getElementById('board').addEventListener('click',e=>{const b=e.target.closest('button[data-id]'); if(b) open(byId[b.dataset.id])});
+dlg.addEventListener('click',e=>{if(e.target===dlg) dlg.close()});
+function verdict(p){
+  const r=BRL.format(p.ref), a=BRL.format(p.atual);
+  if(p.status==='subiu') return `No começo de outubro, o ${esc(p.nome)} aparecia por <b>${r}</b>. Hoje o menor preço nos posts é <b>${a}</b>, <b class="up">${pct(p.var)}</b>. Se ele "cair" para perto de ${r} na Black Friday, não é desconto: é só a volta ao preço de antes.`;
+  if(p.status==='caiu') return `No começo de outubro, o ${esc(p.nome)} aparecia por <b>${r}</b>. Hoje o menor preço nos posts é <b>${a}</b>, <b class="down">${pct(p.var)}</b>. Por enquanto, a queda é real.`;
+  return `O ${esc(p.nome)} segue perto do preço do começo de outubro: <b>${r}</b> antes, <b>${a}</b> hoje. Na Black Friday, só vale se ficar abaixo de ${r}.`;
+}
+function chart(p,cw){
+  const W=Math.max(300,Math.round(cw||700)),H=W<500?220:250,L=40,R=10,T=16,B=28;
+  const t0=INI.getTime(), t1=FIM.getTime();
+  const vs=p.serie.map(s=>s.var), lo=Math.min(-10,...vs), hi=Math.max(10,...vs);
+  const step=(hi-lo)>40?20:10, ylo=Math.floor(lo/step)*step, yhi=Math.ceil(hi/step)*step;
+  const x=d=>L+(ymd(d).getTime()-t0)/(t1-t0)*(W-L-R), y=v=>T+(yhi-v)/(yhi-ylo)*(H-T-B);
+  let g='';
+  for(let v=ylo;v<=yhi;v+=step) g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule)" stroke-width="${v===0?0:1}"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v>0?'+':''}${v}%</text>`;
+  g+=`<line x1="${L}" x2="${W-R}" y1="${y(0)}" y2="${y(0)}" stroke="var(--ink-3)" stroke-dasharray="4 4"/><text x="${x('20261103')}" y="${y(0)-6}">preço de 1º/out</text>`;
+  for(const [d,lab] of (W<500?[['20261001','1/out'],['20261101','1/nov'],['20261130','30/nov']]:[['20261001','1/out'],['20261015','15/out'],['20261101','1/nov'],['20261115','15/nov'],['20261130','30/nov']])) g+=`<text x="${x(d)}" y="${H-8}" text-anchor="middle">${lab}</text>`;
+  const bx=x('20261127');
+  g+=`<rect x="${bx-2}" y="${T}" width="${x('20261130')-bx+4}" height="${H-T-B}" fill="var(--tag)" opacity=".35"/><text x="${bx-6}" y="${T+12}" text-anchor="end" style="fill:var(--ink);font-weight:600">Black Friday →</text>`;
+  const c=`var(--${cls(p)})`, pts=p.serie.map(s=>`${x(s.d).toFixed(1)},${y(s.var).toFixed(1)}`).join(' ');
+  const area=`${x(p.serie[0].d)},${y(0)} ${pts} ${x(p.serie[p.serie.length-1].d)},${y(0)}`;
+  g+=`<polygon points="${area}" fill="${c}" opacity=".12"/><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`;
+  g+=p.serie.map((s,i)=>`<circle cx="${x(s.d)}" cy="${y(s.var)}" r="${i===p.serie.length-1?5:3}" fill="${c}" stroke="var(--paper)" stroke-width="2"/>`).join('');
+  g+=`<line id="xh" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="var(--ink-3)" visibility="hidden"/><rect id="hit" x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="transparent"/>`;
+  return {svg:`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Variação diária do menor preço do ${esc(p.nome)} em relação ao começo de outubro">${g}</svg>`,x,W};
+}
+function open(p){
+  dlg.showModal(); body.innerHTML='<div id="cb" class="chartbox"></div>';
+  const ch=chart(p,Math.min(body.clientWidth-48,712));
+  const of=p.recentes.map(o=>`<li><span class="pr num">${BRL.format(o.por)}</span><span class="who">${dm(o.data)} às ${o.hora.slice(0,2)}:${o.hora.slice(2)}<span class="meta">${o.de?`anunciado "de ${BRL.format(o.de)}"`:'sem preço "de" no post'}</span></span><a href="${esc(o.link)}" target="_blank" rel="noopener">Ver post</a></li>`).join('');
+  body.innerHTML=`<header><div><div class="cat">${esc(p.categoria)}</div><h2 id="dlg-title">${esc(p.nome)}</h2></div><button class="close" id="close">Fechar</button></header>
+  <p class="verdict">${verdict(p)}</p>
+  <div class="facts">
+    <div class="fact"><div class="l">Começo de outubro</div><div class="v num">${BRL.format(p.ref)}</div><div class="s">preço de referência</div></div>
+    <div class="fact"><div class="l">Agora</div><div class="v num ${cls(p)}">${BRL.format(p.atual)}</div><div class="s">${pct(p.var)} vs. referência</div></div>
+    <div class="fact"><div class="l">Menor preço visto</div><div class="v num">${BRL.format(p.melhor.preco)}</div><div class="s">em ${dm(p.melhor.data)}</div></div>
+  </div>
+  <div class="chartbox" id="cb">${ch.svg}<div class="tip" id="tip" hidden></div></div>
+  <div class="offers"><h3>Últimos posts com preço</h3><ul>${of}</ul></div>
+  <p class="note">${p.dias_com_preco} dias com preço e ${p.ofertas} ofertas lidas desde 1º de outubro.${p.poucos_dados?' Este produto aparece pouco nos posts, então a variação pode oscilar mais.':''}</p>`;
+  document.getElementById('close').onclick=()=>dlg.close();
+  const svg=body.querySelector('svg'), tip=document.getElementById('tip'), xh=svg.querySelector('#xh'), cb=document.getElementById('cb');
+  const pts=p.serie.map(s=>({s,x:ch.x(s.d)}));
+  svg.addEventListener('pointermove',e=>{
+    const r=svg.getBoundingClientRect(), vx=(e.clientX-r.left)/r.width*ch.W;
+    const n=pts.reduce((a,b)=>Math.abs(b.x-vx)<Math.abs(a.x-vx)?b:a);
+    if(Math.abs(n.x-vx)>40){tip.hidden=true;xh.setAttribute('visibility','hidden');return}
+    xh.setAttribute('x1',n.x);xh.setAttribute('x2',n.x);xh.setAttribute('visibility','visible');
+    tip.innerHTML=`<b>${dm(n.s.d)}</b> · ${BRL.format(n.s.min)}<br>${pct(n.s.var)} vs. começo de outubro · ${n.s.n} oferta${n.s.n>1?'s':''}`;
+    tip.style.left=Math.min(Math.max(n.x/ch.W*r.width,90),r.width-90)+'px'; tip.style.top=(e.clientY-cb.getBoundingClientRect().top)+'px'; tip.hidden=false;
+  });
+  svg.addEventListener('pointerleave',()=>{tip.hidden=true;xh.setAttribute('visibility','hidden')});
+  document.getElementById('close').focus();
+}
+
+/* categorias */
+function setCat(c){catSel=c;document.querySelectorAll('.cat-row button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c===c)));render();if(c)document.getElementById('board').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
+(function(){
+  const C=D.categorias, all=C.flatMap(c=>c.produtos.map(p=>p.var));
+  const M=Math.max(10,Math.ceil(Math.max(...all.map(Math.abs))/5)*5);
+  document.getElementById('cats').innerHTML=C.map(c=>{
+    const x=v=>((v+M)/(2*M)*100).toFixed(2), z=x(0);
+    const col=c.var>=5?'var(--up)':c.var<=-5?'var(--down)':'var(--flat)';
+    const bl=Math.min(z,x(c.var)), bw=Math.max(.4,Math.abs(x(c.var)-z));
+    const dots=c.produtos.map(p=>`<span class="pt" style="left:${x(p.var)}%" title="${esc(p.nome)}: ${pct(p.var)}"></span>`).join('');
+    const resumo=[c.subiu&&`${c.subiu} mais caro${c.subiu>1?'s':''}`,c.caiu&&`${c.caiu} mais barato${c.caiu>1?'s':''}`,c.estavel&&`${c.estavel} sem mudança`].filter(Boolean).join(', ');
+    return `<li class="cat-row"><button data-c="${esc(c.categoria)}" aria-pressed="false" aria-label="${esc(c.categoria)}: ${pct(c.var)} na mediana. ${resumo}. Ver produtos">
+      <div class="cat-name">${esc(c.categoria)}<small>${resumo}</small></div>
+      <div class="strip" aria-hidden="true"><span class="base"></span><span class="bar" style="left:${bl}%;width:${bw}%;background:${col}"></span><span class="zero" style="left:${z}%"></span>${dots}</div></button></li>`;
+  }).join('');
+  // rótulo de valor em HTML para não distorcer com preserveAspectRatio
+  document.querySelectorAll('.cat-row button').forEach((b,i)=>{const c=C[i];const n=b.querySelector('.cat-name');n.insertAdjacentHTML('beforeend',`<span class="var num ${c.var>=5?'up':c.var<=-5?'down':'flat'}" style="display:inline-block;font-size:26px;margin-top:2px">${pct(c.var)}</span>`)});
+  document.getElementById('cats').addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(b)setCat(catSel===b.dataset.c?null:b.dataset.c)});
+})();
+
+/* atraso de coleta: se passar de 30h sem atualizar, a página avisa */
+(function(){const h=(Date.now()-new Date(D.atualizado_em))/3600e3;if(h>30){document.querySelector('.top').classList.add('stale');const s=document.querySelector('.live strong');s.textContent='Coleta atrasada';}})();
+
+/* metodologia */
+const MET=[
+ ['Fonte','Posts públicos de ofertas e cupons publicados no X (antigo Twitter), coletados pela busca histórica do Buzzmonitor. Os perfis de cupons publicam o produto, o preço e, muitas vezes, um preço "de". <b>Não consultamos o site das lojas</b> e não citamos quem vende: o foco é o preço do produto.'],
+ ['Período',`De 1º de outubro a 30 de novembro de 2026, cobrindo a Black Friday (27/11) e a Cyber Monday (30/11). Coleta diária às 8h (horário de Brasília), sempre com os posts do dia anterior.`],
+ ['Produtos',`${P.length} produtos em ${D.categorias.length} categorias, escolhidos entre os mais procurados na Black Friday e que aparecem com frequência em posts de oferta. Cada produto é um modelo exato (por exemplo, iPhone 17 de 256GB), para que o preço seja comparável de um dia para o outro.`],
+ ['Leitura do preço','Um leitor automático identifica o modelo no texto do post e extrai o preço "por". Parcelas, valores de cupom ("R$ 30 OFF") e economia anunciada são ignorados.'],
+ ['Limpeza','Descartamos kits e combos, acessórios (capas, películas, controles avulsos), usados e recondicionados, retuítes, posts repetidos com o mesmo preço no mesmo dia e preços fora da curva (abaixo de 60% ou acima de 160% do preço típico do produto, quase sempre um modelo diferente lido por engano).'],
+ ['Preço do dia','O <b>menor preço anunciado</b> do produto naquele dia. É o melhor preço que circulou nas redes, o mesmo que um consumidor atento encontraria.'],
+ ['Preço de referência','A <b>mediana dos preços do dia entre 1º e 15 de outubro</b>, antes do aquecimento da Black Friday. É a régua para tudo na página.'],
+ ['Preço agora','A mediana dos três últimos dias com preço. Usar três dias evita que uma oferta-relâmpago isolada mude o resultado.'],
+ ['Variação','(preço agora − referência) ÷ referência. Acima de +5% o produto entra em <b>mais caro</b>, abaixo de −5% em <b>mais barato</b>, e entre os dois em <b>sem mudança</b>.'],
+ ['Desconto prometido','A mediana do desconto anunciado nos posts que trazem preço "de" e "por": (de − por) ÷ de. Ele é comparado com a variação real para mostrar quando o "de" está inflado.'],
+ ['Categorias','A variação da categoria é a mediana das variações dos seus produtos. Os pontos mostram cada produto separadamente.'],
+ ['Poucos dados','Produtos com preço em menos de 12 dias recebem o selo "poucos dados". A variação deles pode oscilar mais.'],
+ ['Limites','Os preços são os anunciados nos posts e podem mudar na loja, depender de cupom, frete ou forma de pagamento. Só o X é lido por enquanto. Não há comparação com 2025: a base pública tem poucos posts com preço da Black Friday passada para comparar os mesmos modelos.'],
+];
+document.getElementById('method-dl').innerHTML=MET.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join('');
+document.getElementById('foot').innerHTML=`BlackFraude lê ${D.total_ofertas.toLocaleString('pt-BR')} ofertas publicadas em posts públicos de redes sociais (coletados via Buzzmonitor) desde 1º de outubro, com dados até ${dm(D.coleta_ate.replace(/-/g,''))}. Os preços são os anunciados nos posts e podem mudar na loja. Veja a <a href="#metodologia">metodologia</a>.`;
+})();
+</script>
