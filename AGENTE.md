@@ -11,16 +11,16 @@ Painel publicado (Artifact): https://claude.ai/artifact/SfovXBwiovWXw3yYKW9qr6
 
 ## 1. Descobrir quais dias coletar
 
-Leia `data/data.json`, campo `coleta_ate` (último dia com dados). Colete **todos os dias** de `coleta_ate + 1` até **ontem**. Normalmente é um dia só, mas se uma execução anterior falhou, recupere os dias que faltam: a busca do Buzzmonitor é histórica.
+Leia `data/data.json`, campo `coleta_ate` (último dia com dados). Busque de **`coleta_ate − 4 dias`** até **ontem**. Os posts do X chegam ao Buzzmonitor com 1 a 3 dias de atraso, então os dias mais recentes vêm incompletos na primeira busca. Buscar de novo os últimos dias completa esses dias, e as ofertas repetidas são descartadas pelo link.
 
 ## 2. Buscar os posts no Buzzmonitor
 
 Para cada dia a coletar e para cada produto de `scripts/products.json`, chame a ferramenta `search_historical_posts` do MCP do Buzzmonitor (Buzz MCP Trends) com:
 
 - `query`: o campo `query` do produto, exatamente como está (sem aspas, sem AND)
-- `since`: `AAAAMMDD000000` e `until`: `AAAAMMDD235959` do dia
+- `since`: primeiro dia da janela às `000000` e `until`: ontem às `235959` (uma busca por termo cobrindo a janela toda)
 - `service`: `["twitter"]`
-- `fields`: `["link"]`
+- `fields`: `["link", "imagem", "ids", "marca", "tipo", "idioma", "categorias", "metricas"]` (os campos extras fazem a resposta ser salva em arquivo, o que evita copiar JSON à mão)
 
 Produtos com a mesma `query` (por exemplo, as duas air fryers) precisam de uma busca só por dia.
 
