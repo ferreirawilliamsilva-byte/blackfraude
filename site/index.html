@@ -92,7 +92,11 @@ a{color:inherit}
 /* quadro */
 .board{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
 .row{border-bottom:1px solid var(--rule)}
-.row button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 140px 132px;gap:20px;align-items:center;padding:16px 8px}
+.row button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 230px 120px;gap:20px;align-items:center;padding:16px 8px}
+.prices{display:flex;align-items:baseline;gap:10px;font-size:15px;color:var(--ink-2)}
+.prices b{font-size:18px;color:var(--ink)}
+.prices .arr{color:var(--ink-3)}
+.prices small{display:block;font-size:12px;color:var(--ink-3)}
 .row button:hover{background:var(--card)}
 .row button:focus-visible{outline:3px solid var(--tag);outline-offset:-3px}
 .name{min-width:0}
@@ -101,40 +105,47 @@ a{color:inherit}
 .name .claim{margin-top:4px;font-size:14px;color:var(--ink-2)}
 .claim s{text-decoration-thickness:2px}
 .flag{display:inline-block;font-size:12px;font-weight:600;color:var(--ink-2);border:1px dashed var(--ink-3);border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:2px}
-.spark{width:140px;height:44px;display:block}
 .var{text-align:right;font-family:var(--display);font-weight:900;font-size:40px;line-height:.9}
 .var small{display:block;font-family:var(--body);font-weight:500;font-size:13px;line-height:1.3;color:var(--ink-3);margin-top:4px}
 .up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--flat)}
 
 @media (max-width:640px){
-  .row button{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name var" "spark spark";gap:8px 14px}
-  .name{grid-area:name}.var{grid-area:var;font-size:34px}.spark{grid-area:spark;width:100%;height:40px}
+  .row button{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name var" "prices prices";gap:8px 14px}
+  .name{grid-area:name}.var{grid-area:var;font-size:34px}.prices{grid-area:prices}
 }
 
 /* seções */
-.sec-h{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin:36px 0 14px}
-.sec-h h2{font-family:var(--display);font-weight:900;font-size:34px;line-height:1;margin:0;text-transform:uppercase}
-.sec-h p{margin:0;color:var(--ink-2);font-size:15px;max-width:60ch}
+.sec{padding-top:56px}
+.sec-h{margin:0 0 18px;max-width:780px}
+.sec-h .kicker{display:inline-block;font-size:14px;font-weight:600;color:var(--tag-ink);background:var(--tag);padding:2px 8px;border-radius:3px;margin-bottom:10px}
+.sec-h h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,4.2vw,44px);line-height:1.02;margin:0;text-wrap:balance}
+.sec-h p{margin:10px 0 0;color:var(--ink-2);font-size:16px;max-width:62ch}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink-2);margin:0 0 10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
 
 /* categorias */
 .cats{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
 .cat-row{border-bottom:1px solid var(--rule)}
-.cat-row button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:12px 8px}
+.cat-row button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:170px minmax(0,1fr);gap:4px 20px;align-items:center;padding:12px 8px}
 .cat-row button:hover{background:var(--card)}
 .cat-row button:focus-visible{outline:3px solid var(--tag);outline-offset:-3px}
 .cat-row button[aria-pressed="true"]{background:var(--card);box-shadow:inset 4px 0 0 var(--tag)}
 .cat-name{font-weight:600;font-size:17px;line-height:1.25}
 .cat-name small{display:block;font-weight:400;font-size:13px;color:var(--ink-3)}
-.strip{position:relative;height:46px;margin:0 12px}
+.strip{position:relative;height:34px;margin:0 56px}
 .cat-right{min-width:0}
 .ext{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13px;color:var(--ink-2);margin:0 12px}
 .ext b{font-weight:700}
-.strip .base{position:absolute;left:0;right:0;top:22px;height:1px;background:var(--rule)}
-.strip .zero{position:absolute;top:4px;bottom:4px;width:2px;margin-left:-1px;background:var(--ink)}
-.strip .bar{position:absolute;top:15px;height:16px;border-radius:3px;opacity:.9}
-.strip .pt{position:absolute;top:17px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--paper);border:1.5px solid var(--ink)}
-.axis-note{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-3);padding:8px 8px 0 228px}
-@media (max-width:640px){.cat-row button{grid-template-columns:1fr;gap:4px}.axis-note{padding-left:8px}}
+.strip .base{position:absolute;left:0;right:0;top:16px;height:1px;background:var(--rule)}
+.strip .zero{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--ink)}
+.strip .bar{position:absolute;top:7px;height:20px;border-radius:3px}
+.strip .lbl{position:absolute;top:2px;font-family:var(--display);font-weight:800;font-size:24px;line-height:1;white-space:nowrap}
+.cat-row .ext{grid-column:2;margin:0 56px}
+.axis-note{display:grid;grid-template-columns:1fr auto 1fr;font-size:13px;color:var(--ink-3);padding:0 64px 6px 254px}
+.axis-note span:nth-child(2){color:var(--ink);font-weight:600}
+.axis-note span:last-child{text-align:right}
+@media (max-width:640px){.cat-row button{grid-template-columns:1fr}.cat-row .ext{grid-column:1;margin:0}.strip{margin:0 44px}.axis-note{padding:0 52px 6px 52px}}
 .catfilter{font-size:14px;color:var(--ink-2);margin:-6px 0 12px;display:flex;gap:8px;align-items:center}
 .catfilter button{all:unset;cursor:pointer;font-weight:600;text-decoration:underline}
 
@@ -146,23 +157,38 @@ a{color:inherit}
 .heat td.c{text-align:center;padding:10px 6px;border-radius:6px;font-family:var(--display);font-weight:800;font-size:20px;color:var(--ink)}
 .heat td.c.few{opacity:.45}
 .heat-note{font-size:13px;color:var(--ink-3);margin:8px 0 0}
+@media (max-width:560px){.heat{min-width:0;border-spacing:2px}.heat th:first-child,.heat td:first-child{white-space:normal;font-size:13px;padding-right:4px;width:84px}.heat td.c{font-size:16px;padding:8px 2px}.heat th{font-size:11px;padding:4px 2px}}
 
 /* lojas */
-.stores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;border-top:2px solid var(--ink);padding-top:16px}
-@media (max-width:760px){.stores{grid-template-columns:1fr}}
-.stores h3{margin:0 0 4px;font-size:18px}
-.stores .sub{margin:0 0 14px;font-size:14px;color:var(--ink-2)}
-.srow{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--rule)}
-.srow .nm{font-weight:600}
-.srow .track{height:14px;background:var(--rule);border-radius:3px;position:relative;overflow:hidden}
-.srow .fill{position:absolute;top:0;bottom:0;border-radius:3px}
-.srow .val{font-family:var(--display);font-weight:800;font-size:22px;text-align:right;min-width:64px}
-.srow .det{grid-column:2/-1;font-size:13px;color:var(--ink-3);margin-top:-4px}
-.srow .mid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);left:50%}
+.stbl{width:100%;border-collapse:collapse;border-top:2px solid var(--ink);font-size:15px}
+.stbl th{font-size:13px;font-weight:600;color:var(--ink-3);text-align:left;padding:10px 8px;border-bottom:1px solid var(--rule);vertical-align:bottom}
+.stbl td{padding:14px 8px;border-bottom:1px solid var(--rule);vertical-align:middle}
+.stbl .nm{font-weight:700;font-size:17px}
+.stbl .big{font-family:var(--display);font-weight:800;font-size:28px;line-height:1}
+.stbl .sm{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
+.stbl .barc{display:flex;align-items:center;gap:10px}
+.stbl .bar{height:12px;border-radius:3px;background:var(--down);min-width:2px}
+@media (max-width:700px){
+  .stbl thead{display:none}
+  .stbl,.stbl tbody,.stbl tr,.stbl td{display:block;width:100%}
+  .stbl tr{border-bottom:1px solid var(--rule);padding:10px 0}
+  .stbl td{border:0;padding:4px 8px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .stbl td::before{content:attr(data-l);font-size:13px;color:var(--ink-3)}
+  .stbl td.nm::before{content:none}
+  .stbl .barc{flex:1;justify-content:flex-end}
+}
 .stores-note{font-size:13px;color:var(--ink-3);margin:12px 0 0;max-width:80ch}
 
 /* metodologia */
-.method{padding-block:12px 8px}
+.method{padding-top:56px}
+.method details{border-top:2px solid var(--ink);padding-top:16px}
+.method summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:16px;border:2px solid var(--ink);border-radius:999px;padding:8px 18px}
+.method summary::-webkit-details-marker{display:none}
+.method summary:hover{background:var(--ink);color:var(--paper)}
+.method summary .pm{font-family:var(--display);font-size:22px;line-height:1}
+.method details[open] summary .pm{transform:rotate(45deg)}
+.method .short{color:var(--ink-2);max-width:62ch;margin:14px 0 0}
+.method dl{margin-top:18px}
 .method dl{display:grid;grid-template-columns:220px minmax(0,1fr);gap:0;margin:0;border-top:2px solid var(--ink)}
 .method dt,.method dd{padding:14px 8px;border-bottom:1px solid var(--rule);margin:0}
 .method dt{font-weight:700}
@@ -231,20 +257,26 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
     </div>
   </section>
 
-  <div class="sec-h"><h2>Por categoria</h2><p>Cada ponto é um produto. A barra mostra a variação típica (mediana) da categoria desde o começo de outubro. Toque numa categoria para ver os produtos dela.</p></div>
-  <ol class="cats" id="cats"></ol>
-  <div class="axis-note"><span>← mais barato que em 1º/out</span><span>mais caro →</span></div>
-  <div class="heat-wrap"><table class="heat" id="heat" aria-label="Variação semanal por categoria em relação ao começo de outubro"></table></div>
-  <p class="heat-note">Semana a semana: variação típica dos produtos de cada categoria em relação ao começo de outubro. Azul é mais barato, laranja é mais caro. Células apagadas têm menos de 3 preços na semana.</p>
+  <section class="sec" aria-labelledby="h-cat">
+    <div class="sec-h"><span class="kicker">Categorias</span><h2 id="h-cat"></h2><p>Cada barra mostra quanto os preços da categoria mudaram desde o começo de outubro. Barra para a direita: mais caro. Para a esquerda: mais barato. Toque numa categoria para ver os produtos dela.</p></div>
+    <div class="axis-note" aria-hidden="true"><span>← mais barato</span><span>preço de 1º/out</span><span>mais caro →</span></div>
+    <ol class="cats" id="cats"></ol>
+  </section>
 
-  <div class="sec-h"><h2>Por loja</h2><p>Lojas citadas nos posts de oferta. Só contamos posts que citam uma única loja.</p></div>
-  <div class="stores">
-    <div><h3>Mais citadas em preços abaixo de outubro</h3><p class="sub">Número de ofertas com preço menor que o do começo de outubro.</p><div id="st-mencoes"></div></div>
-    <div><h3>Maiores reduções</h3><p class="sub">Preço típico das ofertas da loja em relação ao começo de outubro, e o desconto que os posts anunciam.</p><div id="st-reducao"></div></div>
-  </div>
-  <p class="stores-note" id="stores-note"></p>
+  <section class="sec" aria-labelledby="h-sem">
+    <div class="sec-h"><span class="kicker">Semana a semana</span><h2 id="h-sem"></h2><p>Como cada categoria se moveu ao longo das semanas, sempre comparando com o começo de outubro.</p></div>
+    <div class="legend"><span><i style="background:var(--down)"></i>mais barato</span><span><i style="background:var(--rule)"></i>quase igual</span><span><i style="background:var(--up)"></i>mais caro</span><span>Valores apagados: menos de 3 preços na semana</span></div>
+    <div class="heat-wrap"><table class="heat" id="heat" aria-label="Variação semanal por categoria em relação ao começo de outubro"></table></div>
+  </section>
 
-  <div class="sec-h"><h2>Por produto</h2><p>Do que mais subiu ao que mais caiu.</p></div>
+  <section class="sec" aria-labelledby="h-loja">
+    <div class="sec-h"><span class="kicker">Lojas</span><h2 id="h-loja"></h2><p id="d-loja"></p></div>
+    <table class="stbl" id="stbl"></table>
+    <p class="stores-note" id="stores-note"></p>
+  </section>
+
+  <section class="sec" aria-labelledby="h-prod">
+  <div class="sec-h"><span class="kicker">Produtos</span><h2 id="h-prod"></h2><p>Preço do começo de outubro, preço de agora e a diferença. Toque num produto para ver o histórico diário e os posts de onde tiramos cada preço.</p></div>
   <div class="catfilter" id="catfilter" hidden></div>
   <div class="filters" role="group" aria-label="Filtrar produtos">
     <button class="chip" id="f-todos" aria-pressed="true" data-f="todos">Todos <span class="n num" id="n-todos"></span></button>
@@ -254,10 +286,14 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
   </div>
 
   <ol class="board" id="board"></ol>
+  </section>
 
-  <section class="method" id="metodologia" aria-labelledby="met-h">
-    <div class="sec-h"><h2 id="met-h">Metodologia</h2><p>Como cada número desta página é calculado.</p></div>
-    <dl id="method-dl"></dl>
+  <section class="method" id="metodologia" aria-label="Metodologia">
+    <details id="met-det">
+      <summary><span class="pm" aria-hidden="true">+</span>Ver metodologia</summary>
+      <dl id="method-dl"></dl>
+    </details>
+    <p class="short" id="met-short"></p>
   </section>
   <footer id="foot"></footer>
 </main>
@@ -306,28 +342,16 @@ const low=P[P.length-1];
 document.getElementById('picks').innerHTML=[['Maior alta',topUp,'var(--up)'],['Maior queda',low,low.var<0?'var(--down)':'var(--flat)']]
   .map(([l,p,c])=>`<button class="pick" data-id="${p.id}" style="--pc:${c}" aria-label="${l}: ${esc(p.nome)}, ${pct(p.var)}. Ver detalhes"><span class="l">${l} desde 1º/out</span><span class="v num">${pct(p.var)}</span><span class="nm">${esc(p.nome)}</span></button>`).join('');
 document.getElementById('n-todos').textContent=P.length;
+document.getElementById('h-prod').textContent=`${P[0].nome} lidera as altas (${pct(P[0].var)})`+(low.var<=-5?`; ${low.nome} tem a maior queda (${pct(low.var)})`:`; nenhum produto caiu mais de 5%`);
 for(const k of ['subiu','caiu','estavel']) document.getElementById('n-'+k).textContent=n[k];
 
 /* fita */
 const feed=D.feed.map(o=>`<a class="tape-item" href="${esc(o.link)}" target="_blank" rel="noopener"><span>${esc(byId[o.produto]?.nome)}</span><span class="p num">${BRL.format(o.por)}</span><span class="t">${dm(o.data)} ${o.hora.slice(0,2)}:${o.hora.slice(2)}</span></a>`).join('');
 document.getElementById('tape').innerHTML=feed+feed.replace(/<a /g,'<a aria-hidden="true" tabindex="-1" ');
 
-/* sparkline */
-function spark(p){
-  const s=p.serie, W=140,H=44,pad=4;
-  const t0=ymd(s[0].d), t1=ymd(s[s.length-1].d), span=Math.max(1,t1-t0);
-  const vs=s.map(x=>x.var), lo=Math.min(0,...vs), hi=Math.max(0,...vs), r=Math.max(hi-lo,8);
-  const x=d=>pad+(ymd(d)-t0)/span*(W-2*pad), y=v=>pad+(hi+(r-(hi-lo))/2-v)/r*(H-2*pad);
-  const pts=s.map(q=>`${x(q.d).toFixed(1)},${y(q.var).toFixed(1)}`);
-  const last=s[s.length-1], c=`var(--${cls(p)==='flat'?'flat':cls(p)})`;
-  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
-    <line x1="0" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/>
-    <polyline points="${pts.join(' ')}" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-    <circle cx="${x(last.d)}" cy="${y(last.var)}" r="3.5" fill="${c}" stroke="var(--paper)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
-}
 function claim(p){
-  if(p.desconto_anunciado==null) return `Desde 1º de outubro: ${pct(p.var)}`;
-  return `Desconto anunciado nos posts: ${p.desconto_anunciado}%. Variação desde 1º de outubro: <b class="${cls(p)}">${pct(p.var)}</b>`;
+  if(p.desconto_anunciado==null) return '';
+  return `Os posts anunciam, em média, ${p.desconto_anunciado}% de desconto`;
 }
 let filtro='todos', catSel=null;
 function render(){
@@ -337,7 +361,7 @@ function render(){
   if(!list.length){document.getElementById('board').innerHTML='<li class="row" style="padding:16px 8px;color:var(--ink-2)">Nenhum produto desta categoria neste filtro. Escolha "Todos".</li>';return}
   document.getElementById('board').innerHTML=list.map(p=>`<li class="row"><button data-id="${p.id}" aria-label="${esc(p.nome)}: ${pct(p.var)} desde 1º de outubro. Ver detalhes">
     <div class="name"><div class="cat">${esc(p.categoria)}</div><h3>${esc(p.nome)}${p.poucos_dados?'<span class="flag">poucos dados</span>':''}</h3><div class="claim">${claim(p)}</div></div>
-    ${spark(p)}
+    <div class="prices num"><span><small>1º/out</small>${BRL.format(p.ref)}</span><span class="arr" aria-hidden="true">→</span><span><small>agora</small><b class="${cls(p)}">${BRL.format(p.atual)}</b></span></div>
     <div class="var num ${cls(p)}">${pct(p.var)}<small>${p.status==='subiu'?'mais caro':p.status==='caiu'?'mais barato':'quase igual'}</small></div>
   </button></li>`).join('');
 }
@@ -409,20 +433,23 @@ function open(p){
 function setCat(c){catSel=c;document.querySelectorAll('.cat-row button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.c===c)));render();if(c)document.getElementById('board').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
 (function(){
   const C=D.categorias, all=C.flatMap(c=>c.produtos.map(p=>p.var));
-  const M=Math.max(10,Math.ceil(Math.max(...all.map(Math.abs))/5)*5);
+  const M=Math.max(10,Math.ceil(Math.max(...C.map(c=>Math.abs(c.var)))/5)*5+5);
   document.getElementById('cats').innerHTML=C.map(c=>{
-    const x=v=>((v+M)/(2*M)*100).toFixed(2), z=x(0);
-    const col=c.var>=5?'var(--up)':c.var<=-5?'var(--down)':'var(--flat)';
-    const bl=Math.min(z,x(c.var)), bw=Math.max(.4,Math.abs(x(c.var)-z));
-    const dots=c.produtos.map(p=>`<span class="pt" style="left:${x(p.var)}%" title="${esc(p.nome)}: ${pct(p.var)}"></span>`).join('');
+    const x=v=>(v+M)/(2*M)*100, z=x(0);
+    const k=c.var>=5?'up':c.var<=-5?'down':'flat';
+    const bl=Math.min(z,x(c.var)), bw=Math.max(.6,Math.abs(x(c.var)-z));
+    const lbl=c.var>=0?`left:calc(${(bl+bw).toFixed(2)}% + 8px)`:`right:calc(${(100-bl).toFixed(2)}% + 8px)`;
     const resumo=[c.subiu&&`${c.subiu} mais caro${c.subiu>1?'s':''}`,c.caiu&&`${c.caiu} mais barato${c.caiu>1?'s':''}`,c.estavel&&`${c.estavel} sem mudança`].filter(Boolean).join(', ');
-    const ext=c.produtos.length>1?`<span class="ext"><span>▲ ${esc(c.produtos[c.produtos.length-1].nome)} <b class="${c.produtos[c.produtos.length-1].var>=5?'up':'flat'}">${pct(c.produtos[c.produtos.length-1].var)}</b></span><span>▼ ${esc(c.produtos[0].nome)} <b class="${c.produtos[0].var<=-5?'down':'flat'}">${pct(c.produtos[0].var)}</b></span></span>`:'';
-    return `<li class="cat-row"><button data-c="${esc(c.categoria)}" aria-pressed="false" aria-label="${esc(c.categoria)}: ${pct(c.var)} na mediana. ${resumo}. Ver produtos">
+    const hi=c.produtos[c.produtos.length-1], lo=c.produtos[0];
+    const ext=c.produtos.length>1?`<span class="ext"><span>Sobe mais: ${esc(hi.nome)} <b class="${hi.var>=5?'up':'flat'}">${pct(hi.var)}</b></span><span>Cai mais: ${esc(lo.nome)} <b class="${lo.var<=-5?'down':'flat'}">${pct(lo.var)}</b></span></span>`:'';
+    return `<li class="cat-row"><button data-c="${esc(c.categoria)}" aria-pressed="false" aria-label="${esc(c.categoria)}: ${pct(c.var)} desde outubro. ${resumo}. Ver produtos">
       <div class="cat-name">${esc(c.categoria)}<small>${resumo}</small></div>
-      <div class="cat-right"><div class="strip" aria-hidden="true"><span class="base"></span><span class="bar" style="left:${bl}%;width:${bw}%;background:${col}"></span><span class="zero" style="left:${z}%"></span>${dots}</div>${ext}</div></button></li>`;
+      <div class="strip" aria-hidden="true"><span class="base"></span><span class="bar" style="left:${bl.toFixed(2)}%;width:${bw.toFixed(2)}%;background:var(--${k})"></span><span class="zero" style="left:${z}%"></span><span class="lbl ${k}" style="${lbl}">${pct(c.var)}</span></div>${ext}</button></li>`;
   }).join('');
-  // rótulo de valor em HTML para não distorcer com preserveAspectRatio
-  document.querySelectorAll('.cat-row button').forEach((b,i)=>{const c=C[i];const n=b.querySelector('.cat-name');n.insertAdjacentHTML('beforeend',`<span class="var num ${c.var>=5?'up':c.var<=-5?'down':'flat'}" style="display:inline-block;font-size:26px;margin-top:2px">${pct(c.var)}</span>`)});
+  const cs=C.slice().sort((a,b)=>b.var-a.var), ct=cs[0], cb=cs[cs.length-1];
+  document.getElementById('h-cat').textContent=ct.var>=5
+    ? `${ct.categoria} tem a maior alta, ${pct(ct.var)} desde outubro`+(cb.var<=-5?`; ${cb.categoria} recua ${pct(cb.var).slice(1)}`:`; ${cb.categoria} fica perto do preço de outubro`)
+    : `Categorias seguem perto do preço de outubro`;
   document.getElementById('cats').addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(b)setCat(catSel===b.dataset.c?null:b.dataset.c)});
 })();
 
@@ -431,24 +458,34 @@ function setCat(c){catSel=c;document.querySelectorAll('.cat-row button').forEach
   const W=D.semanas, dmy=x=>{const [y,m,dd]=x.split('-');return `${+dd}/${+m}`};
   const ini=new Date(D.inicio+'T00:00:00');
   const lab=w=>{const a=new Date(w+'T00:00:00'), s=a<ini?ini:a, e=new Date(a.getTime()+6*864e5);return `${s.getDate()}–${e.getDate()}/${e.getMonth()+1}`};
-  const col=v=>{if(v==null)return 'transparent';const k=Math.min(Math.abs(v),25)/25;const c=v>=0?'var(--up)':'var(--down)';return `color-mix(in srgb, ${c} ${Math.round(12+k*58)}%, var(--paper))`};
+  const col=v=>{if(v==null)return 'transparent';if(Math.abs(v)<5)return 'var(--rule)';const k=Math.min(Math.abs(v),25)/25;const c=v>=0?'var(--up)':'var(--down)';return `color-mix(in srgb, ${c} ${Math.round(25+k*50)}%, var(--paper))`};
   let h=`<thead><tr><th scope="col">Categoria</th>${W.map(w=>`<th scope="col">${lab(w)}</th>`).join('')}</tr></thead><tbody>`;
   for(const c of D.categorias){
     h+=`<tr><th scope="row" style="text-align:left;color:var(--ink);font-size:14px">${esc(c.categoria)}</th>`+c.semanas.map(w=>w.var==null?'<td class="c">–</td>':`<td class="c${w.n<3?' few':''}" style="background:${col(w.var)}" title="${w.n} preços na semana">${pct(w.var)}</td>`).join('')+'</tr>';
   }
   document.getElementById('heat').innerHTML=h+'</tbody>';
+  let wi=W.length-1; while(wi>0 && D.categorias.filter(c=>c.semanas[wi].n>=3).length<3) wi--;
+  const ok=D.categorias.filter(c=>c.semanas[wi].n>=3).map(c=>({c:c.categoria,v:c.semanas[wi].var})).sort((a,b)=>b.v-a.v);
+  const top=ok[0], bot=ok[ok.length-1];
+  document.getElementById('h-sem').textContent=`Na semana de ${lab(W[wi])}, ${top.c} ${top.v>=5?'teve a maior alta':'liderou'} (${pct(top.v)})`+(bot.v<=-5?` e ${bot.c} ficou mais barata (${pct(bot.v)})`:'');
 })();
 
 /* lojas */
 (function(){
   const L=D.lojas; if(!L.length) return;
-  const mx=Math.max(...L.map(l=>l.mencoes_reducao));
-  document.getElementById('st-mencoes').innerHTML=L.slice().sort((a,b)=>b.mencoes_reducao-a.mencoes_reducao).map(l=>`<div class="srow"><span class="nm">${esc(l.loja)}</span><span class="track"><span class="fill" style="left:0;width:${(l.mencoes_reducao/mx*100).toFixed(1)}%;background:var(--down)"></span></span><span class="val num">${l.mencoes_reducao}</span><span class="det">${l.pct_reducao}% das ${l.mencoes} ofertas citadas · ${l.produtos} produtos</span></div>`).join('');
-  const R=Math.max(10,...L.map(l=>Math.abs(l.reducao_mediana)));
-  document.getElementById('st-reducao').innerHTML=L.slice().sort((a,b)=>b.reducao_mediana-a.reducao_mediana).map(l=>{
-    const v=-l.reducao_mediana, w=Math.abs(v)/R*50, left=v<0?50-w:50, c=v<=-0.5?'var(--down)':v>=0.5?'var(--up)':'var(--flat)';
-    return `<div class="srow"><span class="nm">${esc(l.loja)}</span><span class="track"><span class="fill" style="left:${left}%;width:${Math.max(w,.6)}%;background:${c}"></span><span class="mid"></span></span><span class="val num ${v<=-0.5?'down':v>=0.5?'up':'flat'}">${pct(v)}</span><span class="det">${l.desconto_anunciado!=null?`Desconto anunciado típico: ${l.desconto_anunciado}%. `:''}Maior redução: ${esc(l.maior_reducao.produto)}, ${pct(-l.maior_reducao.red)} em ${dm(l.maior_reducao.data)}</span></div>`}).join('');
-  document.getElementById('stores-note').textContent=`Na coluna da direita, o número é a variação típica (mediana) dos preços da loja em relação ao começo de outubro: negativo é mais barato. Cada loja anuncia produtos diferentes, então compare com cuidado. ${D.ofertas_com_loja} das ${D.total_ofertas} ofertas citam uma única loja; as demais não entram nesta seção. Lojas com menos de 10 ofertas ficam de fora.`;
+  const S=L.slice().sort((a,b)=>b.mencoes_reducao-a.mencoes_reducao), mx=S[0].mencoes_reducao;
+  document.getElementById('stbl').innerHTML=`<thead><tr><th scope="col">Loja</th><th scope="col">Ofertas abaixo do preço de outubro</th><th scope="col">Desconto que os posts anunciam</th><th scope="col">Preço típico em relação a outubro</th><th scope="col">Maior queda vista</th></tr></thead><tbody>`+
+   S.map(l=>{const v=-l.reducao_mediana,k=v<=-5?'down':v>=5?'up':'flat';return `<tr>
+    <td class="nm">${esc(l.loja)}</td>
+    <td data-l="Ofertas abaixo do preço de outubro"><span class="barc"><span class="bar" style="width:${Math.round(l.mencoes_reducao/mx*120)}px"></span><span><span class="big num">${l.mencoes_reducao}</span><span class="sm">de ${l.mencoes} ofertas (${l.pct_reducao}%)</span></span></span></td>
+    <td data-l="Desconto que os posts anunciam"><span class="big num">${l.desconto_anunciado!=null?l.desconto_anunciado+'%':'–'}</span></td>
+    <td data-l="Preço típico em relação a outubro"><span class="big num ${k}">${pct(v)}</span></td>
+    <td data-l="Maior queda vista"><span><b class="down num">${pct(-l.maior_reducao.red)}</b> ${esc(l.maior_reducao.produto)}<span class="sm">em ${dm(l.maior_reducao.data)}</span></span></td></tr>`}).join('')+'</tbody>';
+  const tot=S.reduce((a,l)=>a+l.mencoes_reducao,0);
+  document.getElementById('h-loja').textContent=`${S[0].loja} aparece em ${Math.round(S[0].mencoes_reducao/tot*100)}% das ofertas abaixo do preço de outubro`;
+  const mais=L.slice().sort((a,b)=>(b.desconto_anunciado||0)-(a.desconto_anunciado||0))[0];
+  document.getElementById('d-loja').textContent=`Lojas citadas nos posts de oferta, da que mais aparece com preço abaixo de outubro para a que menos aparece. O maior desconto anunciado em média é o de ${mais.loja} (${mais.desconto_anunciado}%).`;
+  document.getElementById('stores-note').textContent=`"Preço típico em relação a outubro" negativo significa que as ofertas da loja estão, em geral, mais baratas que no começo de outubro. Cada loja anuncia produtos diferentes, então a comparação é indicativa. ${D.ofertas_com_loja} das ${D.total_ofertas} ofertas citam uma única loja; as demais não entram nesta seção. Lojas com menos de 10 ofertas ficam de fora.`;
 })();
 
 /* atraso de coleta: se passar de 30h sem atualizar, a página avisa */
@@ -473,7 +510,9 @@ const MET=[
  ['Limites','Os preços são os anunciados nos posts e podem mudar na loja, depender de cupom, frete, forma de pagamento ou troca de aparelho usado. Posts comparativos e preços com troca declarada são descartados. Só o X é lido por enquanto. Não há comparação com 2025: a base pública tem poucos posts com preço da Black Friday passada para comparar os mesmos modelos.'],
 ];
 document.getElementById('method-dl').innerHTML=MET.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join('');
-document.getElementById('foot').innerHTML=`O Monitor de Preços BF lê ${D.total_ofertas.toLocaleString('pt-BR')} ofertas publicadas em posts públicos de redes sociais (coletados via Buzzmonitor) desde 1º de outubro, com dados até ${dm(D.coleta_ate.replace(/-/g,''))}. Os preços são os anunciados nos posts e podem mudar na loja. Veja a <a href="#metodologia">metodologia</a>.`;
+document.getElementById('met-short').textContent=`Lemos todo dia os posts de oferta publicados no X e registramos o menor preço anunciado de cada produto. A referência é o preço de 1 a 15 de outubro. Os preços são os dos posts, não os do site das lojas.`;
+if(location.hash==='#metodologia') document.getElementById('met-det').open=true;
+document.getElementById('foot').innerHTML=`O Monitor de Preços BF lê ${D.total_ofertas.toLocaleString('pt-BR')} ofertas publicadas em posts públicos de redes sociais (coletados via Buzzmonitor) desde 1º de outubro, com dados até ${dm(D.coleta_ate.replace(/-/g,''))}. Os preços são os anunciados nos posts e podem mudar na loja. Veja a <a href="#metodologia" onclick="document.getElementById('met-det').open=true">metodologia</a>.`;
 })();
 </script>
 
