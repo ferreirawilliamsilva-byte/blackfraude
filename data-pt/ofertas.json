@@ -436,21 +436,6 @@
 },
 {
 "data": "20261012",
-"hora": "1149",
-"categoria": "Telemóveis",
-"desconto": 22,
-"antes": null,
-"agora": 7.7,
-"loja": "Amazon",
-"rede": "news",
-"link": "https://4gnews.pt/evita-multas-com-este-suporte-para-telemovel-que-esta-por-menos-de-15-na-amazon/",
-"titulo": "Crédito: (4gnews / Amazon) Usas o telemóvel como GPS quando vais de carro? Então, sabes como é importante ter o ecrã visível sem andares à p",
-"texto": "Crédito: (4gnews / Amazon) Usas o telemóvel como GPS quando vais de carro? Então, sabes como é importante ter o ecrã visível sem andares à procura dele enquanto conduzes. A utilização indevida do telemóvel ao volante pode resultar em multas e perda de pontos na carta.Para evitares estas penalizações",
-"autor": null,
-"fonte": "4gnews"
-},
-{
-"data": "20261012",
 "hora": "1335",
 "categoria": "Informática",
 "desconto": 21,
@@ -675,21 +660,6 @@
 "fonte": "4gnews"
 },
 {
-"data": "20261015",
-"hora": "1855",
-"categoria": "Telemóveis",
-"desconto": 14,
-"antes": null,
-"agora": 171.0,
-"loja": null,
-"rede": "news",
-"link": "https://4gnews.pt/samsung-galaxy-a56-por-menos-de-300-vale-a-pena-ha-3-razoes-para-comprar/",
-"titulo": "Crédito: (4gnews / Worten) Se estás à procura de um novo smartphone e encontraste uma promoção do SAMSUNG Galaxy A56 5G, é natural que te pe",
-"texto": "Crédito: (4gnews / Worten) Se estás à procura de um novo smartphone e encontraste uma promoção do SAMSUNG Galaxy A56 5G, é natural que te perguntes: “Será que vale a pena?” A resposta é sim. Com um desconto de 13% e mais 10% extra com o cupão SAMSUNGMKP, podes poupar cerca de 22% face ao preço origi",
-"autor": null,
-"fonte": "4gnews"
-},
-{
 "data": "20261016",
 "hora": "1225",
 "categoria": "Telemóveis",
@@ -767,7 +737,7 @@
 {
 "data": "20261017",
 "hora": "1656",
-"categoria": "Telemóveis",
+"categoria": "Informática",
 "desconto": 50,
 "antes": null,
 "agora": 9.23,
@@ -857,7 +827,7 @@
 {
 "data": "20261019",
 "hora": "1045",
-"categoria": "Telemóveis",
+"categoria": "Casa",
 "desconto": 24,
 "antes": null,
 "agora": 10.0,
@@ -1095,21 +1065,6 @@
 "fonte": null
 },
 {
-"data": "20261021",
-"hora": "1850",
-"categoria": "Telemóveis",
-"desconto": 14,
-"antes": null,
-"agora": 10.16,
-"loja": "Amazon",
-"rede": "news",
-"link": "https://4gnews.pt/seguranca-ao-volante-por-menos-de-30-esta-dashcam-com-wi-fi-esta-ao-melhor-preco/",
-"titulo": "Crédito: (4gnews / Amazon) Já te aconteceu baterem no teu carro e nem sequer veres quem foi? Ou encontrares o carro riscado e ficares sem sa",
-"texto": "Crédito: (4gnews / Amazon) Já te aconteceu baterem no teu carro e nem sequer veres quem foi? Ou encontrares o carro riscado e ficares sem saber o que aconteceu? A Amazon tem uma solução prática: esta dashcam iZEEKER 2,5K com Wi-Fi está com 14% de desconto. Agora custa 26,14 €, em vez de 30,49 €, e g",
-"autor": null,
-"fonte": "4gnews"
-},
-{
 "data": "20261022",
 "hora": "1035",
 "categoria": "Beleza",
@@ -1123,20 +1078,5 @@
 "texto": "Crédito: (4gnews / Amazon / Worten) Manter a casa sempre seca e sem bolor pode ser um desafio, sobretudo numa semana de chuva. Por isso, prepara já a tua casa com uma destas 5 opções com descontos até 31%. O Desumidificador PRO BREEZE PB-D-06W, por exemplo, pode ajudar-te a resolver este problema.Co",
 "autor": null,
 "fonte": "4gnews"
-},
-{
-"data": "20261022",
-"hora": "1440",
-"categoria": "Telemóveis",
-"desconto": 68,
-"antes": null,
-"agora": 13.11,
-"loja": null,
-"rede": "news",
-"link": "https://4gnews.pt/ve-ja-estas-5-powerbanks-a-menos-de-20-euros-e-com-carregamento-rapido/",
-"titulo": "Foto de Markus Winkler Nos dias que correm, ter uma powerbank sempre contigo é essencial, visto que nem sempre tens uma ficha por perto para",
-"texto": "Foto de Markus Winkler Nos dias que correm, ter uma powerbank sempre contigo é essencial, visto que nem sempre tens uma ficha por perto para carregar o teu telemóvel. E o melhor de tudo é que, hoje em dia, já consegues comprar powerbanks baratas e boas.Aqui estão cinco modelos (alguns em promoção) a",
-"autor": null,
-"fonte": null
 }
 ]

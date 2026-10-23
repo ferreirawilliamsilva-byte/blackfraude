@@ -18,6 +18,10 @@ Painel: https://claude.ai/artifact/SfovXBwiovWXw3yYKW9qr6 (privado) e site públ
 | `data/data.json` | Dados que alimentam o painel |
 | `AGENTE.md` | Rotina diária da tarefa agendada |
 
+## Portugal
+
+Versão portuguesa focada em descontos anunciados (não em preço por modelo, porque em Portugal o mesmo modelo raramente aparece em vários dias): `paises/pt/` (extrator, cálculo e modelo), `data-pt/` (dados) e `site-pt/` (páginas). Painel: https://claude.ai/artifact/Bup8kdzynwaieUvnST3ddv. Para o Netlify, crie um segundo site a partir deste repositório com a pasta de publicação `site-pt`.
+
 ## Rodar localmente
 
 ```bash

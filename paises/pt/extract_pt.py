@@ -19,7 +19,7 @@ CATS=[ # ordem importa: a primeira que casar define a categoria
  ('Áudio e relógios',r'airpods|auricular|auscultador|headphone|buds|coluna\s|\bjbl\b|smartwatch|smart watch|rel[óo]gio|apple\s*watch|galaxy\s*watch'),
  ('Beleza',r'perfume|eau de|secador|maquilhagem|skincare|alisador|escova de cabelo'),
  ('TVs',r'\bsmart\s*tv\b|\btv\b|televis|\boled\b|\bqled\b|mini\s?led'),
- ('Informática',r'port[áa]til|laptop|macbook|\bipad\b|tablet|\bpad\s*\d|monitor\b|\bssd\b|computador'),
+ ('Informática',r'kindle|e-?reader|port[áa]til|laptop|macbook|\bipad\b|tablet|\bpad\s*\d|monitor\b|\bssd\b|computador'),
  ('Telemóveis',r'telem[óo]vel|smartphone|iphone|galaxy\s*[asz]\d|redmi\s*note|xiaomi\s*\d|pixel\s*\d|vivo\s*v\d'),
  ('Consolas e jogos',r'\bps5\b|playstation|nintendo|switch\s*2|xbox'),
  ('Casa',r'air\s*fryer|airfryer|fritadeira|aspirador|m[áa]quina de (lavar|caf)|frigor[íi]fico|micro-?ondas|bimby|robot de cozinha|ar[\s-]condicionado|cafeteira'),
@@ -47,6 +47,7 @@ def desconto(t):
             return p,None,(min(pr) if pr else None)
     return None
 
+ACESS=re.compile(r'powerbank|power bank|capa|pel[íi]cula|carregador|cabo usb|suporte',re.I)
 def extrair(posts):
     out=[]
     for p in posts:
@@ -57,7 +58,7 @@ def extrair(posts):
         d=desconto(t)
         if not d: continue
         tl=t.lower()
-        cat=next((c for c,rx in CATS if re.search(rx,tl)),None)
+        cat=next((c for c,rx in CATS if re.search(rx,tl) and not (c=='Telemóveis' and ACESS.search(tl))),None)  # acessórios não contam como telemóvel
         if cat is None: continue  # fora das categorias acompanhadas (seguros, combustível, bicicletas...)
         lojas=[l for l,rx in LOJAS.items() if re.search(rx,tl)]
         out.append({'data':p['date'][:8],'hora':p['date'][8:12],'categoria':cat,'desconto':d[0],'antes':d[1],'agora':d[2],

@@ -1,0 +1,201 @@
+<title>Monitor de Descontos BF Portugal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/*CSS*/
+/* Portugal: barras de desconto, tabela de destaques e transparência das fontes */
+.logo .pt{background:var(--paper);color:var(--ink);margin-left:6px;padding:0 6px;border-radius:3px;font-size:20px}
+.hbars{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.hbars li{display:grid;grid-template-columns:170px minmax(0,1fr) 80px;gap:4px 16px;align-items:center;padding:12px 8px;border-bottom:1px solid var(--rule)}
+.hbars .nm{font-weight:600;font-size:17px;line-height:1.25}
+.hbars .nm small{display:block;font-weight:400;font-size:13px;color:var(--ink-3)}
+.hbars .trk{height:20px;background:var(--rule);border-radius:3px;position:relative;overflow:hidden}
+.hbars .fill{position:absolute;inset:0 auto 0 0;background:var(--down);border-radius:3px}
+.hbars .v{font-family:var(--display);font-weight:800;font-size:28px;text-align:right}
+.hbars .ext{grid-column:2/-1;font-size:13px;color:var(--ink-2)}
+.hbars li.few{opacity:.55}
+.hbars li.few .fill{background:var(--flat)}
+@media (max-width:640px){.hbars li{grid-template-columns:minmax(0,1fr) 64px}.hbars .trk{grid-column:1/-1;grid-row:2}.hbars .ext{grid-column:1/-1}}
+.deals{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.deals li{display:grid;grid-template-columns:90px minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:12px 8px;border-bottom:1px solid var(--rule)}
+.deals .pc{font-family:var(--display);font-weight:900;font-size:34px;color:var(--down);line-height:1}
+.deals .t{font-size:15px;line-height:1.35;min-width:0}
+.deals .t small{display:block;font-size:13px;color:var(--ink-3);margin-top:2px}
+.deals a{font-size:14px;font-weight:600;white-space:nowrap}
+@media (max-width:560px){.deals li{grid-template-columns:70px minmax(0,1fr)}.deals a{grid-column:2}.deals .pc{font-size:28px}}
+.src{border:2px solid var(--ink);border-radius:10px;padding:18px 20px;display:grid;gap:12px;background:var(--card)}
+.src .stack{display:flex;height:22px;border-radius:4px;overflow:hidden}
+.src .stack span{display:block;height:100%}
+.src ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px}
+.src li{display:inline-flex;gap:6px;align-items:center}
+.src i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.src p{margin:0;color:var(--ink-2);font-size:15px;max-width:70ch}
+.vol{display:flex;align-items:flex-end;gap:2px;height:90px;border-bottom:2px solid var(--ink);padding-top:8px}
+.vol span{flex:1;background:var(--down);border-radius:2px 2px 0 0;min-height:2px;position:relative}
+.vol span:hover{background:var(--ink)}
+.vol-ax{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-top:4px}
+.warn{font-size:14px;color:var(--ink-2);border-left:4px solid var(--tag);padding:6px 12px;margin:14px 0 0;max-width:72ch}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="logo" aria-label="Monitor de Descontos BF Portugal">Monitor de Descontos<b>BF</b><span class="pt">PT</span></div>
+    <div class="live" aria-live="polite"><span class="dot" aria-hidden="true"></span><span><strong>Ao vivo</strong> <span class="muted" id="upd">atualizado hoje</span></span></div>
+    <div class="count"><span class="big num" id="dleft">–</span><span id="dlabel">dias para a Black Friday</span></div>
+  </div>
+</header>
+<div class="tape" aria-label="Últimas ofertas partilhadas nas redes em Portugal"><div class="tape-track" id="tape"></div></div>
+
+<main class="wrap">
+  <section class="hero">
+    <h1 id="headline">Descontos de Black Friday partilhados em Portugal</h1>
+    <div class="hero-foot">
+      <p id="lede"></p>
+      <div class="picks" id="picks"></div>
+    </div>
+    <p class="warn" id="warn"></p>
+  </section>
+
+  <section class="sec" aria-labelledby="h-cat">
+    <div class="sec-h"><span class="kicker">Categorias</span><h2 id="h-cat"></h2><p>Desconto típico (mediana) anunciado nas ofertas de cada categoria desde 1 de outubro. Categorias com menos de 10 ofertas aparecem apagadas.</p></div>
+    <ol class="hbars" id="cats"></ol>
+  </section>
+
+  <section class="sec" aria-labelledby="h-sem">
+    <div class="sec-h"><span class="kicker">Semana a semana</span><h2 id="h-sem"></h2><p>Desconto típico anunciado em cada semana. Quanto mais escuro, maior o desconto.</p></div>
+    <div class="legend"><span><i style="background:color-mix(in srgb,var(--down) 25%,var(--paper))"></i>até 20%</span><span><i style="background:color-mix(in srgb,var(--down) 55%,var(--paper))"></i>cerca de 35%</span><span><i style="background:var(--down)"></i>50% ou mais</span><span>Valores apagados: menos de 3 ofertas na semana</span></div>
+    <div class="heat-wrap"><table class="heat" id="heat" aria-label="Desconto típico anunciado por categoria e semana"></table></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-top">
+    <div class="sec-h"><span class="kicker">Maiores descontos</span><h2 id="h-top"></h2><p>Os maiores descontos anunciados nos últimos 14 dias, com o link para a publicação de origem.</p></div>
+    <ol class="deals" id="deals"></ol>
+  </section>
+
+  <section class="sec" aria-labelledby="h-loja">
+    <div class="sec-h"><span class="kicker">Lojas</span><h2 id="h-loja"></h2><p>Só contam as ofertas que citam uma única loja. Lojas com menos de 3 ofertas ficam de fora.</p></div>
+    <table class="stbl" id="stbl"></table>
+  </section>
+
+  <section class="sec" aria-labelledby="h-fonte">
+    <div class="sec-h"><span class="kicker">De onde vêm as ofertas</span><h2 id="h-fonte"></h2></div>
+    <div class="src" id="src"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-vol">
+    <div class="sec-h"><span class="kicker">Volume</span><h2 id="h-vol"></h2><p>Número de ofertas com desconto encontradas por dia.</p></div>
+    <div class="vol" id="vol" role="img"></div>
+    <div class="vol-ax"><span>1/out</span><span id="vol-end"></span></div>
+  </section>
+
+  <section class="method" id="metodologia" aria-label="Metodologia">
+    <details id="met-det">
+      <summary><span class="pm" aria-hidden="true">+</span>Ver metodologia</summary>
+      <dl id="method-dl"></dl>
+    </details>
+    <p class="short">Lemos todos os dias as publicações públicas sobre ofertas em Portugal e registamos o desconto que cada uma anuncia. Os descontos são os anunciados nas publicações, não os do site das lojas.</p>
+  </section>
+  <footer id="foot"></footer>
+</main>
+
+<script id="bf-data" type="application/json">/*DATA*/</script>
+<script>
+(function(){
+const D=JSON.parse(document.getElementById('bf-data').textContent);
+const C=D.categorias, ok=C.filter(c=>!c.poucos_dados);
+const EUR=new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR',maximumFractionDigits:2});
+const dm=s=>s.slice(6,8)+'/'+s.slice(4,6);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const BF=new Date(D.black_friday+'T00:00:00Z'), FIM=new Date(D.fim+'T00:00:00Z');
+const ini=new Date(D.inicio+'T00:00:00');
+const lab=w=>{const a=new Date(w+'T00:00:00'),s=a<ini?ini:a,e=new Date(a.getTime()+6*864e5);return `${s.getDate()}–${e.getDate()}/${e.getMonth()+1}`};
+
+function tick(){
+  const now=new Date(), mins=Math.max(0,Math.round((now-new Date(D.atualizado_em))/60000));
+  const ago=mins<60?`há ${mins} min`:mins<1440?`há ${Math.round(mins/60)} h`:`há ${Math.round(mins/1440)} dia(s)`;
+  document.getElementById('upd').textContent=`atualizado ${ago} · atualização diária`;
+  const days=Math.ceil((BF-now)/864e5), dl=document.getElementById('dleft'), lb=document.getElementById('dlabel');
+  if(days>0){dl.textContent=days;lb.textContent=days===1?'dia para a Black Friday':'dias para a Black Friday'}
+  else if(now<FIM){dl.textContent='Hoje';lb.textContent='é semana de Black Friday'}
+  else{dl.textContent='';lb.textContent='Acompanhamento terminado'}
+  if((now-new Date(D.atualizado_em))/36e5>30){document.querySelector('.top').classList.add('stale');document.querySelector('.live strong').textContent='Recolha atrasada'}
+}
+tick(); setInterval(tick,30000);
+
+/* topo */
+const sa=D.semana_atual, sp=D.semana_anterior;
+document.getElementById('headline').textContent=`Desconto típico anunciado esta semana: ${sa.desconto}%`;
+document.getElementById('lede').textContent=`Na semana de ${lab(sa.inicio)}, as ${sa.n} ofertas partilhadas nas redes em Portugal anunciaram, em mediana, ${sa.desconto}% de desconto`+(sp?` (na semana anterior: ${sp.desconto}%, em ${sp.n} ofertas).`:'.')+` Acompanhamos telemóveis, TVs, informática, áudio, consolas, casa e beleza até à Black Friday, a 27 de novembro.`;
+const topc=ok.slice().sort((a,b)=>b.desconto-a.desconto)[0];
+document.getElementById('picks').innerHTML=`<div class="pick" style="--pc:var(--down);cursor:default"><span class="l">Categoria com maior desconto típico</span><span class="v num">${topc.desconto}%</span><span class="nm">${esc(topc.categoria)}</span></div>
+<div class="pick" style="--pc:var(--ink);cursor:default"><span class="l">Ofertas lidas desde 1/out</span><span class="v num">${D.total_ofertas}</span><span class="nm">em ${D.volume.length} dias</span></div>`;
+const f2=D.fontes.filter(f=>f.fonte!=='Outras fontes').reduce((a,f)=>a+f.pct,0);
+document.getElementById('warn').textContent=`Leia com cuidado: ${f2}% das ofertas vêm de apenas duas fontes. Estes números mostram o que é partilhado nas redes, não o mercado português no seu todo.`;
+
+/* fita */
+const feed=D.feed.map(o=>`<a class="tape-item" href="${esc(o.link)}" target="_blank" rel="noopener"><span>${esc(o.titulo.slice(0,60))}${o.titulo.length>60?'…':''}</span><span class="p num">−${o.desconto}%</span><span class="t">${dm(o.data)}</span></a>`).join('');
+document.getElementById('tape').innerHTML=feed+feed.replace(/<a /g,'<a aria-hidden="true" tabindex="-1" ');
+
+/* categorias */
+const mx=Math.max(...C.map(c=>c.desconto||0),50);
+document.getElementById('cats').innerHTML=C.map(c=>`<li class="${c.poucos_dados?'few':''}">
+  <span class="nm">${esc(c.categoria)}<small>${c.n} oferta${c.n>1?'s':''}${c.poucos_dados?' · poucos dados':''}</small></span>
+  <span class="trk" aria-hidden="true"><span class="fill" style="width:${(c.desconto/mx*100).toFixed(1)}%"></span></span>
+  <span class="v num">${c.desconto}%</span>
+  <span class="ext">Maior desconto: ${c.melhor.desconto}% · ${esc(c.melhor.titulo.slice(0,80))}${c.melhor.titulo.length>80?'…':''}</span></li>`).join('');
+const oc=ok.slice().sort((a,b)=>b.desconto-a.desconto);
+document.getElementById('h-cat').textContent=`${oc[0].categoria} tem o maior desconto típico (${oc[0].desconto}%); ${oc[oc.length-1].categoria} o menor (${oc[oc.length-1].desconto}%)`;
+
+/* semanas */
+(function(){
+  const W=D.semanas;
+  const bg=v=>v==null?'transparent':`color-mix(in srgb, var(--down) ${Math.round(15+Math.min(v,60)/60*85)}%, var(--paper))`;
+  const fg=(v,few)=>!few&&v!=null&&v>=40?'#fff':'var(--ink)';
+  let h=`<thead><tr><th scope="col">Categoria</th>${W.map(w=>`<th scope="col">${lab(w)}</th>`).join('')}</tr></thead><tbody>`;
+  for(const c of C) h+=`<tr><th scope="row" style="text-align:left;color:var(--ink);font-size:14px">${esc(c.categoria)}</th>`+c.semanas.map(w=>w.desconto==null?'<td class="c">–</td>':`<td class="c num${w.n<3?' few':''}" style="background:${bg(w.desconto)};color:${fg(w.desconto,w.n<3)}" title="${w.n} ofertas">${w.desconto}%</td>`).join('')+'</tr>';
+  document.getElementById('heat').innerHTML=h+'</tbody>';
+  const wi=W.length-1, cand=ok.filter(c=>c.semanas[wi].n>=3).sort((a,b)=>b.semanas[wi].desconto-a.semanas[wi].desconto);
+  document.getElementById('h-sem').textContent=cand.length?`Na semana de ${lab(W[wi])}, ${cand[0].categoria} anunciou os maiores descontos (${cand[0].semanas[wi].desconto}%)`:`Semana de ${lab(W[wi])} ainda com poucas ofertas por categoria`;
+})();
+
+/* maiores descontos */
+document.getElementById('deals').innerHTML=D.top.map(o=>`<li><span class="pc num">−${o.desconto}%</span><span class="t">${esc(o.titulo)}<small>${esc(o.categoria)} · ${dm(o.data)}${o.antes?` · antes ${EUR.format(o.antes)}, agora ${EUR.format(o.agora)}`:o.agora?` · a partir de ${EUR.format(o.agora)}`:''}</small></span><a href="${esc(o.link)}" target="_blank" rel="noopener">Ver publicação</a></li>`).join('');
+document.getElementById('h-top').textContent=`O maior desconto dos últimos 14 dias foi de ${D.top[0].desconto}%, em ${D.top[0].categoria.toLowerCase()}`;
+
+/* lojas */
+const L=D.lojas, lt=L.reduce((a,l)=>a+l.n,0);
+document.getElementById('stbl').innerHTML=`<thead><tr><th scope="col">Loja</th><th scope="col">Ofertas</th><th scope="col">Desconto típico</th><th scope="col">Maior desconto</th></tr></thead><tbody>`+L.map(l=>`<tr><td class="nm">${esc(l.loja)}</td><td data-l="Ofertas"><span class="big num">${l.n}</span><span class="sm">${Math.round(l.n/lt*100)}% das ofertas com loja</span></td><td data-l="Desconto típico"><span class="big num">${l.desconto}%</span></td><td data-l="Maior desconto"><span class="big num down">${l.max}%</span></td></tr>`).join('')+'</tbody>';
+document.getElementById('h-loja').textContent=L.length?`${L[0].loja} aparece em ${Math.round(L[0].n/lt*100)}% das ofertas com loja identificada`:'Ainda há poucas ofertas com loja identificada';
+
+/* fontes */
+const cols=['var(--ink)','var(--down)','var(--flat)'];
+document.getElementById('h-fonte').textContent=`Duas fontes concentram ${f2}% das ofertas`;
+document.getElementById('src').innerHTML=`<div class="stack" role="img" aria-label="Divisão das ofertas por fonte">${D.fontes.map((f,i)=>`<span style="width:${f.pct}%;background:${cols[i]}"></span>`).join('')}</div>
+<ul>${D.fontes.map((f,i)=>`<li><i style="background:${cols[i]}"></i>${esc(f.fonte)}: ${f.n} (${f.pct}%)</li>`).join('')}</ul>
+<p>Em Portugal, as ofertas circulam sobretudo em grupos de mensagens e comparadores de preços, que não são públicos. Nas redes abertas, poucas contas publicam ofertas com preço. Por isso, quando uma destas fontes muda o que divulga, os números desta página também mudam.</p>`;
+
+/* volume */
+const V=D.volume, vm=Math.max(...V.map(v=>v.n),1);
+document.getElementById('vol').innerHTML=V.map(v=>`<span style="height:${(v.n/vm*100).toFixed(0)}%" title="${dm(v.d)}: ${v.n} oferta${v.n===1?'':'s'}"></span>`).join('');
+document.getElementById('vol').setAttribute('aria-label',`Ofertas por dia de 1/out a ${dm(V[V.length-1].d)}, máximo de ${vm} num dia`);
+document.getElementById('vol-end').textContent=dm(V[V.length-1].d);
+const media=(D.total_ofertas/V.length).toFixed(1).replace('.',',');
+document.getElementById('h-vol').textContent=`Em média, ${media} ofertas por dia até agora`;
+
+/* metodologia */
+const MET=[
+ ['Fonte','Publicações públicas no Instagram, Facebook, X e sites de notícias, recolhidas pela pesquisa histórica do Buzzmonitor. Só entram publicações em português com preço em euros e sinais de Portugal (lojas, termos ou domínios portugueses).'],
+ ['Período','De 1 de outubro a 30 de novembro de 2026, incluindo a Black Friday (27/11) e a Cyber Monday (30/11). Atualização diária.'],
+ ['O que é medido','O desconto anunciado em cada publicação: o percentual explícito (por exemplo "−30%" ou "30% de desconto") ou o cálculo a partir de "antes" e "agora". Não acompanhamos o preço de um modelo exato ao longo do tempo, porque em Portugal o mesmo modelo raramente aparece em vários dias.'],
+ ['Categorias','Telemóveis, TVs, informática, áudio e relógios, consolas e jogos, casa e beleza. Publicações fora destas categorias (seguros, combustível, viagens) são descartadas.'],
+ ['Desconto típico','A mediana dos descontos anunciados. Categorias com menos de 10 ofertas no período aparecem como "poucos dados". Na tabela semanal, valores com menos de 3 ofertas aparecem apagados.'],
+ ['Lojas','Identificadas pelo nome citado na publicação. Publicações que citam várias lojas ficam sem loja.'],
+ ['Limites','Os descontos são os anunciados e não foram verificados no site das lojas. O desconto pode ser calculado sobre um preço de referência alto. Poucas fontes concentram a maior parte das ofertas, o que limita a leitura do mercado.'],
+];
+document.getElementById('method-dl').innerHTML=MET.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join('');
+if(location.hash==='#metodologia')document.getElementById('met-det').open=true;
+document.getElementById('foot').innerHTML=`Monitor de Descontos BF Portugal · ${D.total_ofertas} ofertas de publicações públicas recolhidas via Buzzmonitor desde 1 de outubro, com dados até ${dm(D.coleta_ate.replace(/-/g,''))}. Veja a <a href="#metodologia" onclick="document.getElementById('met-det').open=true">metodologia</a>.`;
+})();
+</script>

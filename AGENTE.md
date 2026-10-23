@@ -56,7 +56,35 @@ Republique `site/blackfraude.html` no **mesmo** Artifact. Primeiro leia o artifa
 
 ## 6. Resumo final
 
-Termine com um resumo curto: dias coletados, quantas ofertas novas, produtos e lojas que mais mudaram, e qualquer busca que falhou.
+Depois do passo 7 (Portugal), termine com um resumo curto: dias coletados, quantas ofertas novas, produtos e lojas que mais mudaram, e qualquer busca que falhou.
+
+## 7. Portugal (depois do Brasil)
+
+Painel de Portugal (Artifact): https://claude.ai/artifact/Bup8kdzynwaieUvnST3ddv
+
+Portugal mede o **desconto anunciado** por categoria (não o preço de um modelo exato). Janela: de `data-pt/data.json` → `coleta_ate − 4 dias` até ontem.
+
+Faça estas 6 buscas no Buzzmonitor, cada uma cobrindo a janela toda, com `language: ["pt"]` e os mesmos `fields` do Brasil:
+
+| query | service |
+|---|---|
+| `smart tv OR televisão OR tv oled OR tv qled OR telemóvel OR smartphone OR iphone OR galaxy OR xiaomi` | instagram |
+| `ps5 OR playstation OR nintendo switch OR xbox OR portátil OR ipad OR tablet OR monitor OR macbook` | instagram |
+| `air fryer OR airfryer OR fritadeira OR aspirador OR máquina de lavar OR frigorífico OR bimby OR perfume OR secador` | instagram |
+| `desconto OR descontos OR promoção OR promoções OR cupão OR "antes" OR "agora"` | news |
+| `desconto OR descontos OR promoção OR promoções OR cupão OR worten OR fnac` | facebook |
+| `desconto OR promoção OR cupão OR worten OR fnac OR "rádio popular" OR continente` | twitter |
+
+Salve cada resposta, sem alterações, em `raw-pt/AAAAMMDD/` (a pasta fica fora do git). Depois:
+
+```bash
+python3 paises/pt/extract_pt.py "raw-pt/**/*"   # acumula em data-pt/ofertas.json
+python3 paises/pt/build_pt.py                   # data-pt/data.json
+python3 paises/pt/render_pt.py                  # site-pt/portugal.html (Artifact) e site-pt/index.html (Netlify)
+git add data-pt site-pt paises && git commit -m "Coleta diária Portugal: dados até AAAA-MM-DD" && git push origin main
+```
+
+Republique `site-pt/portugal.html` no Artifact de Portugal (leia antes, publique com `url`). No resumo final, inclua o número de ofertas novas de Portugal e a participação das duas maiores fontes.
 
 ## Regras do painel
 
