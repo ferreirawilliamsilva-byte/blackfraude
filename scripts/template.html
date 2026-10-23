@@ -117,6 +117,9 @@ a{color:inherit}
 .cat-name{font-weight:600;font-size:17px;line-height:1.25}
 .cat-name small{display:block;font-weight:400;font-size:13px;color:var(--ink-3)}
 .strip{position:relative;height:46px;margin:0 12px}
+.cat-right{min-width:0}
+.ext{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13px;color:var(--ink-2);margin:0 12px}
+.ext b{font-weight:700}
 .strip .base{position:absolute;left:0;right:0;top:22px;height:1px;background:var(--rule)}
 .strip .zero{position:absolute;top:4px;bottom:4px;width:2px;margin-left:-1px;background:var(--ink)}
 .strip .bar{position:absolute;top:15px;height:16px;border-radius:3px;opacity:.9}
@@ -125,6 +128,29 @@ a{color:inherit}
 @media (max-width:640px){.cat-row button{grid-template-columns:1fr;gap:4px}.axis-note{padding-left:8px}}
 .catfilter{font-size:14px;color:var(--ink-2);margin:-6px 0 12px;display:flex;gap:8px;align-items:center}
 .catfilter button{all:unset;cursor:pointer;font-weight:600;text-decoration:underline}
+
+/* semana a semana */
+.heat-wrap{overflow-x:auto;margin-top:28px}
+.heat{border-collapse:separate;border-spacing:3px;width:100%;min-width:520px;font-size:14px}
+.heat th{font-weight:600;font-size:13px;color:var(--ink-3);text-align:center;padding:4px 6px}
+.heat th:first-child,.heat td:first-child{text-align:left;color:var(--ink);font-weight:600;padding-right:12px;white-space:nowrap}
+.heat td.c{text-align:center;padding:10px 6px;border-radius:6px;font-family:var(--display);font-weight:800;font-size:20px;color:var(--ink)}
+.heat td.c.few{opacity:.45}
+.heat-note{font-size:13px;color:var(--ink-3);margin:8px 0 0}
+
+/* lojas */
+.stores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;border-top:2px solid var(--ink);padding-top:16px}
+@media (max-width:760px){.stores{grid-template-columns:1fr}}
+.stores h3{margin:0 0 4px;font-size:18px}
+.stores .sub{margin:0 0 14px;font-size:14px;color:var(--ink-2)}
+.srow{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--rule)}
+.srow .nm{font-weight:600}
+.srow .track{height:14px;background:var(--rule);border-radius:3px;position:relative;overflow:hidden}
+.srow .fill{position:absolute;top:0;bottom:0;border-radius:3px}
+.srow .val{font-family:var(--display);font-weight:800;font-size:22px;text-align:right;min-width:64px}
+.srow .det{grid-column:2/-1;font-size:13px;color:var(--ink-3);margin-top:-4px}
+.srow .mid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);left:50%}
+.stores-note{font-size:13px;color:var(--ink-3);margin:12px 0 0;max-width:80ch}
 
 /* metodologia */
 .method{padding-block:12px 8px}
@@ -196,6 +222,15 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
   <div class="sec-h"><h2>Por categoria</h2><p>Cada ponto é um produto. A barra mostra a variação típica (mediana) da categoria desde o começo de outubro. Toque numa categoria para ver os produtos dela.</p></div>
   <ol class="cats" id="cats"></ol>
   <div class="axis-note"><span>← mais barato que em 1º/out</span><span>mais caro →</span></div>
+  <div class="heat-wrap"><table class="heat" id="heat" aria-label="Variação semanal por categoria em relação ao começo de outubro"></table></div>
+  <p class="heat-note">Semana a semana: variação típica dos produtos de cada categoria em relação ao começo de outubro. Azul é mais barato, laranja é mais caro. Células apagadas têm menos de 3 preços na semana.</p>
+
+  <div class="sec-h"><h2>Por loja</h2><p>Lojas citadas nos posts de oferta. Só contamos posts que citam uma única loja.</p></div>
+  <div class="stores">
+    <div><h3>Mais citadas em preços abaixo de outubro</h3><p class="sub">Número de ofertas com preço menor que o do começo de outubro.</p><div id="st-mencoes"></div></div>
+    <div><h3>Maiores reduções</h3><p class="sub">Preço típico das ofertas da loja em relação ao começo de outubro, e o desconto que os posts anunciam.</p><div id="st-reducao"></div></div>
+  </div>
+  <p class="stores-note" id="stores-note"></p>
 
   <div class="sec-h"><h2>Por produto</h2><p>Do que mais subiu ao que mais caiu.</p></div>
   <div class="catfilter" id="catfilter" hidden></div>
@@ -369,13 +404,39 @@ function setCat(c){catSel=c;document.querySelectorAll('.cat-row button').forEach
     const bl=Math.min(z,x(c.var)), bw=Math.max(.4,Math.abs(x(c.var)-z));
     const dots=c.produtos.map(p=>`<span class="pt" style="left:${x(p.var)}%" title="${esc(p.nome)}: ${pct(p.var)}"></span>`).join('');
     const resumo=[c.subiu&&`${c.subiu} mais caro${c.subiu>1?'s':''}`,c.caiu&&`${c.caiu} mais barato${c.caiu>1?'s':''}`,c.estavel&&`${c.estavel} sem mudança`].filter(Boolean).join(', ');
+    const ext=c.produtos.length>1?`<span class="ext"><span>▲ ${esc(c.produtos[c.produtos.length-1].nome)} <b class="${c.produtos[c.produtos.length-1].var>=5?'up':'flat'}">${pct(c.produtos[c.produtos.length-1].var)}</b></span><span>▼ ${esc(c.produtos[0].nome)} <b class="${c.produtos[0].var<=-5?'down':'flat'}">${pct(c.produtos[0].var)}</b></span></span>`:'';
     return `<li class="cat-row"><button data-c="${esc(c.categoria)}" aria-pressed="false" aria-label="${esc(c.categoria)}: ${pct(c.var)} na mediana. ${resumo}. Ver produtos">
       <div class="cat-name">${esc(c.categoria)}<small>${resumo}</small></div>
-      <div class="strip" aria-hidden="true"><span class="base"></span><span class="bar" style="left:${bl}%;width:${bw}%;background:${col}"></span><span class="zero" style="left:${z}%"></span>${dots}</div></button></li>`;
+      <div class="cat-right"><div class="strip" aria-hidden="true"><span class="base"></span><span class="bar" style="left:${bl}%;width:${bw}%;background:${col}"></span><span class="zero" style="left:${z}%"></span>${dots}</div>${ext}</div></button></li>`;
   }).join('');
   // rótulo de valor em HTML para não distorcer com preserveAspectRatio
   document.querySelectorAll('.cat-row button').forEach((b,i)=>{const c=C[i];const n=b.querySelector('.cat-name');n.insertAdjacentHTML('beforeend',`<span class="var num ${c.var>=5?'up':c.var<=-5?'down':'flat'}" style="display:inline-block;font-size:26px;margin-top:2px">${pct(c.var)}</span>`)});
   document.getElementById('cats').addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(b)setCat(catSel===b.dataset.c?null:b.dataset.c)});
+})();
+
+/* semana a semana por categoria */
+(function(){
+  const W=D.semanas, dmy=x=>{const [y,m,dd]=x.split('-');return `${+dd}/${+m}`};
+  const ini=new Date(D.inicio+'T00:00:00');
+  const lab=w=>{const a=new Date(w+'T00:00:00'), s=a<ini?ini:a, e=new Date(a.getTime()+6*864e5);return `${s.getDate()}–${e.getDate()}/${e.getMonth()+1}`};
+  const col=v=>{if(v==null)return 'transparent';const k=Math.min(Math.abs(v),25)/25;const c=v>=0?'var(--up)':'var(--down)';return `color-mix(in srgb, ${c} ${Math.round(12+k*58)}%, var(--paper))`};
+  let h=`<thead><tr><th scope="col">Categoria</th>${W.map(w=>`<th scope="col">${lab(w)}</th>`).join('')}</tr></thead><tbody>`;
+  for(const c of D.categorias){
+    h+=`<tr><th scope="row" style="text-align:left;color:var(--ink);font-size:14px">${esc(c.categoria)}</th>`+c.semanas.map(w=>w.var==null?'<td class="c">–</td>':`<td class="c${w.n<3?' few':''}" style="background:${col(w.var)}" title="${w.n} preços na semana">${pct(w.var)}</td>`).join('')+'</tr>';
+  }
+  document.getElementById('heat').innerHTML=h+'</tbody>';
+})();
+
+/* lojas */
+(function(){
+  const L=D.lojas; if(!L.length) return;
+  const mx=Math.max(...L.map(l=>l.mencoes_reducao));
+  document.getElementById('st-mencoes').innerHTML=L.slice().sort((a,b)=>b.mencoes_reducao-a.mencoes_reducao).map(l=>`<div class="srow"><span class="nm">${esc(l.loja)}</span><span class="track"><span class="fill" style="left:0;width:${(l.mencoes_reducao/mx*100).toFixed(1)}%;background:var(--down)"></span></span><span class="val num">${l.mencoes_reducao}</span><span class="det">${l.pct_reducao}% das ${l.mencoes} ofertas citadas · ${l.produtos} produtos</span></div>`).join('');
+  const R=Math.max(10,...L.map(l=>Math.abs(l.reducao_mediana)));
+  document.getElementById('st-reducao').innerHTML=L.slice().sort((a,b)=>b.reducao_mediana-a.reducao_mediana).map(l=>{
+    const v=-l.reducao_mediana, w=Math.abs(v)/R*50, left=v<0?50-w:50, c=v<=-0.5?'var(--down)':v>=0.5?'var(--up)':'var(--flat)';
+    return `<div class="srow"><span class="nm">${esc(l.loja)}</span><span class="track"><span class="fill" style="left:${left}%;width:${Math.max(w,.6)}%;background:${c}"></span><span class="mid"></span></span><span class="val num ${v<=-0.5?'down':v>=0.5?'up':'flat'}">${pct(v)}</span><span class="det">${l.desconto_anunciado!=null?`Desconto anunciado típico: ${l.desconto_anunciado}%. `:''}Maior redução: ${esc(l.maior_reducao.produto)}, ${pct(-l.maior_reducao.red)} em ${dm(l.maior_reducao.data)}</span></div>`}).join('');
+  document.getElementById('stores-note').textContent=`Na coluna da direita, o número é a variação típica (mediana) dos preços da loja em relação ao começo de outubro: negativo é mais barato. Cada loja anuncia produtos diferentes, então compare com cuidado. ${D.ofertas_com_loja} das ${D.total_ofertas} ofertas citam uma única loja; as demais não entram nesta seção. Lojas com menos de 10 ofertas ficam de fora.`;
 })();
 
 /* atraso de coleta: se passar de 30h sem atualizar, a página avisa */
@@ -383,7 +444,7 @@ function setCat(c){catSel=c;document.querySelectorAll('.cat-row button').forEach
 
 /* metodologia */
 const MET=[
- ['Fonte','Posts públicos de ofertas e cupons publicados no X (antigo Twitter), coletados pela busca histórica do Buzzmonitor. Os perfis de cupons publicam o produto, o preço e, muitas vezes, um preço "de". <b>Não consultamos o site das lojas</b> e não citamos quem vende: o foco é o preço do produto.'],
+ ['Fonte','Posts públicos de ofertas e cupons publicados no X (antigo Twitter), coletados pela busca histórica do Buzzmonitor. Os perfis de cupons publicam o produto, o preço e, muitas vezes, um preço "de". <b>Não consultamos o site das lojas</b>: os preços são os que os posts anunciam.'],
  ['Período',`De 1º de outubro a 30 de novembro de 2026, cobrindo a Black Friday (27/11) e a Cyber Monday (30/11). Coleta diária às 8h (horário de Brasília), sempre com os posts do dia anterior.`],
  ['Produtos',`${P.length} produtos em ${D.categorias.length} categorias, escolhidos entre os mais procurados na Black Friday e que aparecem com frequência em posts de oferta. Cada produto é um modelo exato (por exemplo, iPhone 17 de 256GB), para que o preço seja comparável de um dia para o outro.`],
  ['Leitura do preço','Um leitor automático identifica o modelo no texto do post e extrai o preço "por". Parcelas, valores de cupom ("R$ 30 OFF") e economia anunciada são ignorados.'],
@@ -394,8 +455,10 @@ const MET=[
  ['Variação','(preço agora − referência) ÷ referência. Acima de +5% o produto entra em <b>mais caro</b>, abaixo de −5% em <b>mais barato</b>, e entre os dois em <b>sem mudança</b>.'],
  ['Desconto prometido','A mediana do desconto anunciado nos posts que trazem preço "de" e "por": (de − por) ÷ de. Ele é mostrado ao lado da variação medida desde o começo de outubro, para que as duas informações possam ser comparadas.'],
  ['Categorias','A variação da categoria é a mediana das variações dos seus produtos. Os pontos mostram cada produto separadamente.'],
+ ['Semana a semana','Para cada categoria e semana (segunda a domingo), a mediana das variações diárias dos produtos em relação ao começo de outubro. A primeira semana começa em 1º de outubro.'],
+ ['Lojas','A loja é identificada pelo nome citado no post. Posts que citam várias lojas (por exemplo, rodapés genéricos com três lojas) ficam sem loja. "Preço abaixo de outubro" conta as ofertas com preço menor que a referência do produto. A redução típica é a mediana de (referência − preço) ÷ referência das ofertas da loja. Lojas com menos de 10 ofertas não aparecem. Como cada loja anuncia produtos diferentes, a comparação entre lojas é indicativa.'],
  ['Poucos dados','Produtos com preço em menos de 12 dias recebem o selo "poucos dados". A variação deles pode oscilar mais.'],
- ['Limites','Os preços são os anunciados nos posts e podem mudar na loja, depender de cupom, frete ou forma de pagamento. Só o X é lido por enquanto. Não há comparação com 2025: a base pública tem poucos posts com preço da Black Friday passada para comparar os mesmos modelos.'],
+ ['Limites','Os preços são os anunciados nos posts e podem mudar na loja, depender de cupom, frete, forma de pagamento ou troca de aparelho usado. Posts comparativos e preços com troca declarada são descartados. Só o X é lido por enquanto. Não há comparação com 2025: a base pública tem poucos posts com preço da Black Friday passada para comparar os mesmos modelos.'],
 ];
 document.getElementById('method-dl').innerHTML=MET.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join('');
 document.getElementById('foot').innerHTML=`O Monitor de Preços BF lê ${D.total_ofertas.toLocaleString('pt-BR')} ofertas publicadas em posts públicos de redes sociais (coletados via Buzzmonitor) desde 1º de outubro, com dados até ${dm(D.coleta_ate.replace(/-/g,''))}. Os preços são os anunciados nos posts e podem mudar na loja. Veja a <a href="#metodologia">metodologia</a>.`;

@@ -51,7 +51,39 @@ for c,xs in cats.items():
         'produtos':[{'id':x['id'],'nome':x['nome'],'var':x['var']} for x in sorted(xs,key=lambda x:x['var'])],
         'subiu':sum(x['status']=='subiu' for x in xs),'caiu':sum(x['status']=='caiu' for x in xs),'estavel':sum(x['status']=='estavel' for x in xs)})
 categorias.sort(key=lambda c:-c['var'])
-data={'categorias':categorias,'atualizado_em':agora,'coleta_ate':ultimo_dia.isoformat(),'inicio':INICIO.isoformat(),'black_friday':BF.isoformat(),'fim':FIM.isoformat(),
+# evolução semanal por categoria: para cada semana (segunda a domingo), mediana da variação diária dos produtos
+def semana(dstr):
+    x=d(dstr); return x-dt.timedelta(days=x.weekday())
+sem_cat=defaultdict(lambda: defaultdict(list))
+for x in out:
+    for s_ in x['serie']: sem_cat[x['categoria']][semana(s_['d'])].append(s_['var'])
+semanas=sorted({w for c in sem_cat.values() for w in c})
+for c in categorias:
+    c['semanas']=[{'inicio':w.isoformat(),'var':round(st.median(sem_cat[c['categoria']][w]),1) if sem_cat[c['categoria']][w] else None,
+                   'n':len(sem_cat[c['categoria']][w])} for w in semanas]
+
+# lojas: só ofertas que citam uma única loja (ver scripts/lojas.py)
+sys.path.insert(0,'scripts')
+from lojas import loja as achar_loja
+ref_por={x['id']:x['ref'] for x in out}
+porloja=defaultdict(list)
+for o in ofertas:
+    if o['produto'] not in ref_por: continue
+    l=achar_loja(o.get('texto',''))
+    if l: porloja[l].append(o)
+lojas=[]
+for l,os_ in porloja.items():
+    if len(os_)<10: continue
+    red=[(ref_por[o['produto']]-o['por'])/ref_por[o['produto']]*100 for o in os_]
+    abaixo=sum(r>0 for r in red)
+    des=[(o['de']-o['por'])/o['de']*100 for o in os_ if o['de']]
+    lojas.append({'loja':l,'mencoes':len(os_),'mencoes_reducao':abaixo,'pct_reducao':round(abaixo/len(os_)*100),
+                  'reducao_mediana':round(st.median(red),1),'desconto_anunciado':round(st.median(des)) if len(des)>=5 else None,
+                  'produtos':len({o['produto'] for o in os_}),
+                  'maior_reducao':(lambda o:{'produto':next(x['nome'] for x in out if x['id']==o['produto']),'red':round((ref_por[o['produto']]-o['por'])/ref_por[o['produto']]*100,1),'data':o['data']})(max(os_,key=lambda o:(ref_por[o['produto']]-o['por'])/ref_por[o['produto']]))})
+lojas.sort(key=lambda x:-x['mencoes_reducao'])
+atribuidas=sum(len(v) for v in porloja.values())
+data={'lojas':lojas,'ofertas_com_loja':atribuidas,'semanas':[w.isoformat() for w in semanas],'categorias':categorias,'atualizado_em':agora,'coleta_ate':ultimo_dia.isoformat(),'inicio':INICIO.isoformat(),'black_friday':BF.isoformat(),'fim':FIM.isoformat(),
       'referencia':'mediana dos preços de 01 a 15/10','total_ofertas':sum(x['ofertas'] for x in out),'produtos':out,'feed':feed}
 json.dump(data,open('data/data.json','w'),ensure_ascii=False,separators=(',',':'))
 for x in sorted(out,key=lambda x:x['var']): print(f"{x['nome'][:34]:34s} ref={x['ref']:8.0f} atual={x['atual']:8.0f} var={x['var']:+6.1f}% sem={x['var7']} anunc={x['desconto_anunciado']} dias={x['dias_com_preco']}")

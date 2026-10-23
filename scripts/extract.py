@@ -19,7 +19,7 @@ def precos(t,lo,hi):
     clean=re.sub(r'\d+\s*x\s*(de\s*)?R?\$?\s*'+NUM,' ',t,flags=re.I)            # parcelas
     clean=re.sub(r'R\$\s*'+NUM+r'\s*(OFF|de desconto)',' ',clean,flags=re.I)     # cupons R$ X OFF
     clean=re.sub(r'(OFF|acima|compras|pedidos?|m[íi]nimo)\s*(em|de|acima de)?\s*R\$\s*'+NUM,' ',clean,flags=re.I)
-    clean=re.sub(r'(economi[zs]e|economia|desconto de)\s*:?\s*R\$\s*'+NUM,' ',clean,flags=re.I)
+    clean=re.sub(r'(economi\w*|desconto de)\s*:?\s*R\$\s*'+NUM,' ',clean,flags=re.I)
     de=None;por=None
     m=re.search(r'\bde\s*:?\s*~?\s*R?\$?\s*'+NUM+r'\s*~?\s*[|\-–,]?\s*(?:💥|💰|🤑|🔥|⚡|💸|💵|\*|\s)*\s*por',clean,re.I)
     if m: de=num(m.group(1))
@@ -40,12 +40,14 @@ def precos(t,lo,hi):
     if de is not None and not(por<de<=por*4): de=None
     return por,de
 KIT=re.compile(r'\bkit\b|\bcombo\b|\d\s*unidades',re.I)
+# posts que comparam modelos ("S25 Ultra vs S26 Ultra") misturam preços de produtos diferentes
+COMPARA=re.compile(r'\bvs\.?\s|\bversus\b|comparativo|qual vale mais|com troca|troca extra|na troca|trade.?in',re.I)  # inclui preços que dependem de entregar um aparelho usado
 def extrair(posts,prods):
     out=[]
     comp=[(p,re.compile(p['inc'],re.I),re.compile(p['exc'],re.I)) for p in prods]
     for post in posts:
         t=post.get('content') or ''
-        if t.startswith(('RT @','@')) or 'R$' not in t or 'http' not in t: continue
+        if t.startswith(('RT @','@')) or 'R$' not in t or 'http' not in t or COMPARA.search(t): continue
         for p,inc,exc in comp:
             m=inc.search(t)
             if not m: continue

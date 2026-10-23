@@ -10,7 +10,8 @@ Painel: https://claude.ai/artifact/SfovXBwiovWXw3yYKW9qr6 (privado) e site públ
 |---|---|
 | `scripts/products.json` | Produtos acompanhados: nome, categoria, termo de busca, regras de identificação do modelo e faixa de preço válida |
 | `scripts/extract.py` | Lê os posts brutos em `raw/`, identifica o produto, extrai o preço "por" e o "de", limpa kits, acessórios, repetições e preços fora da curva |
-| `scripts/build.py` | Calcula preço do dia, referência (1 a 15/10), variação, desconto prometido e visão por categoria |
+| `scripts/build.py` | Calcula preço do dia, referência (1 a 15/10), variação, desconto anunciado, visão por categoria (atual e semanal) e visão por loja |
+| `scripts/lojas.py` | Identifica a loja citada em cada post (posts que citam várias lojas ficam sem loja) |
 | `scripts/render.py` + `scripts/template.html` | Gera `site/blackfraude.html` (Artifact) e `site/index.html` (Netlify) com os dados embutidos |
 | `data/ofertas_brutas.json` | Histórico acumulado de todas as ofertas extraídas |
 | `data/ofertas.json` | Ofertas depois da limpeza |

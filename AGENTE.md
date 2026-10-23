@@ -56,9 +56,9 @@ Republique `site/blackfraude.html` no **mesmo** Artifact. Primeiro leia o artifa
 
 ## 6. Resumo final
 
-Termine com um resumo curto: dias coletados, quantas ofertas novas, produtos que mais mudaram, e qualquer busca que falhou. Não cite nomes de lojas no resumo.
+Termine com um resumo curto: dias coletados, quantas ofertas novas, produtos e lojas que mais mudaram, e qualquer busca que falhou.
 
 ## Regras do painel
 
-- O painel não cita as lojas que vendem os produtos. O campo `loja` só existe em `data/ofertas_brutas.json` e nunca vai para `data/data.json`.
+- As lojas aparecem só na seção "Por loja", de forma agregada (calculada por `scripts/lojas.py` e `scripts/build.py`). Ofertas individuais na página não mostram loja.
 - Não altere a lista de produtos, os limites de preço ou a metodologia sem pedido explícito do responsável pelo projeto.
