@@ -6,6 +6,9 @@ REF_ATE=dt.date(2026,10,15)
 prods=json.load(open('scripts/products.json'))
 ofertas=json.load(open('data/ofertas.json'))
 agora=sys.argv[1] if len(sys.argv)>1 else dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).strftime('%Y-%m-%dT%H:%M:00-03:00')
+# o dia de hoje ainda está incompleto (posts com data UTC passam da meia-noite): entra na coleta de amanhã
+ontem=(dt.date.fromisoformat(agora[:10])-dt.timedelta(days=1)).strftime('%Y%m%d')
+ofertas=[o for o in ofertas if o['data']<=ontem]
 def d(s): return dt.date(int(s[:4]),int(s[4:6]),int(s[6:8]))
 by=defaultdict(lambda: defaultdict(list))
 for o in ofertas: by[o['produto']][o['data']].append(o)
