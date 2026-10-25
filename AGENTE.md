@@ -64,7 +64,7 @@ Painel de Portugal (Artifact): https://claude.ai/artifact/Bup8kdzynwaieUvnST3ddv
 
 Portugal mede o **desconto anunciado** por categoria (não o preço de um modelo exato). Janela: de `data-pt/data.json` → `coleta_ate − 4 dias` até ontem.
 
-Faça estas 6 buscas no Buzzmonitor, cada uma cobrindo a janela toda, com `language: ["pt"]` e os mesmos `fields` do Brasil:
+Faça estas 7 buscas no Buzzmonitor, cada uma cobrindo a janela toda, com `language: ["pt"]` e os mesmos `fields` do Brasil:
 
 | query | service |
 |---|---|
@@ -74,8 +74,9 @@ Faça estas 6 buscas no Buzzmonitor, cada uma cobrindo a janela toda, com `langu
 | `desconto OR descontos OR promoção OR promoções OR cupão OR "antes" OR "agora"` | news |
 | `desconto OR descontos OR promoção OR promoções OR cupão OR worten OR fnac` | facebook |
 | `desconto OR promoção OR cupão OR worten OR fnac OR "rádio popular" OR continente` | twitter |
+| `4gnews` | news |
 
-Salve cada resposta, sem alterações, em `raw-pt/AAAAMMDD/` (a pasta fica fora do git). Depois:
+A busca de notícias genérica quase sempre bate no limite de 5.000 posts e deixa de fora o 4gnews, uma das principais fontes; por isso a busca `4gnews` é separada. Salve cada resposta, sem alterações, em `raw-pt/AAAAMMDD/` (a pasta fica fora do git). Depois:
 
 ```bash
 python3 paises/pt/extract_pt.py "raw-pt/**/*"   # acumula em data-pt/ofertas.json
