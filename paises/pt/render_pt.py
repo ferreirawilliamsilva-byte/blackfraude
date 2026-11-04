@@ -4,6 +4,9 @@ br=open('scripts/template.html').read()
 css=br[br.index('<style>')+7:br.index('</style>')]
 t=open('paises/pt/template_pt.html').read().replace('/*CSS*/',css)
 t=t.replace('/*DATA*/',open('data-pt/data.json').read().replace('</','<\\/'))
+# depoimentos: retrato pontual (recorte regional), atualizado só quando o recorte é refeito
+dp='data-pt/depoimentos.json'
+t=t.replace('/*DEPO*/',open(dp).read().replace('</','<\\/') if os.path.exists(dp) else 'null')
 os.makedirs('site-pt',exist_ok=True)
 open('site-pt/portugal.html','w').write(t)
 i=t.index('</style>')+len('</style>')

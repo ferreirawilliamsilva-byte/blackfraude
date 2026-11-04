@@ -85,6 +85,8 @@ python3 paises/pt/render_pt.py                  # site-pt/portugal.html (Artifac
 git add data-pt site-pt paises && git commit -m "Coleta diária Portugal: dados até AAAA-MM-DD" && git push origin main
 ```
 
+A secção "Consumidores" do painel de Portugal vem de `data-pt/depoimentos.json`, um retrato pontual feito com o recorte regional por negativação (skill `recorte-regional-por-negativacao`) e curadoria manual. A rotina diária não o altera: o `render_pt.py` só o reaproveita. Refazer o recorte só quando o responsável pelo projeto pedir.
+
 Republique `site-pt/portugal.html` no Artifact de Portugal (leia antes, publique com `url`). No resumo final, inclua o número de ofertas novas de Portugal e a participação das duas maiores fontes.
 
 ## Regras do painel

@@ -37,6 +37,21 @@
 .vol span:hover{background:var(--ink)}
 .vol-ax{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-top:4px}
 .warn{font-size:14px;color:var(--ink-2);border-left:4px solid var(--tag);padding:6px 12px;margin:14px 0 0;max-width:72ch}
+/* Portugal: depoimentos de consumidores */
+.funil{display:flex;flex-wrap:wrap;gap:8px 0;margin:0 0 18px;padding:0;list-style:none;font-size:14px;color:var(--ink-2)}
+.funil li{display:inline-flex;align-items:baseline;gap:6px}
+.funil li+li::before{content:"→";margin:0 10px;color:var(--ink-3)}
+.funil b{font-family:var(--display);font-weight:800;font-size:22px;color:var(--ink)}
+.funil li.hl b{color:var(--down)}
+.temas{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.temas>li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 16px;padding:16px 8px;border-bottom:1px solid var(--rule)}
+.temas .n{font-family:var(--display);font-weight:900;font-size:34px;line-height:1}
+.temas .n small{display:block;font-family:inherit;font-weight:400;font-size:12px;color:var(--ink-3);line-height:1.3}
+.temas h3{margin:0;font-size:18px;line-height:1.25}
+.temas .rs{margin:4px 0 10px;color:var(--ink-2);font-size:15px;max-width:68ch}
+.temas blockquote{margin:0 0 8px;padding:2px 0 2px 12px;border-left:3px solid var(--rule);font-size:15px;line-height:1.4;max-width:68ch}
+.temas blockquote small{display:block;color:var(--ink-3);font-size:12px;margin-top:2px}
+@media (max-width:560px){.temas>li{grid-template-columns:44px minmax(0,1fr)}.temas .n{font-size:26px}}
 </style>
 
 <header class="top">
@@ -90,6 +105,13 @@
     <div class="vol-ax"><span>1/out</span><span id="vol-end"></span></div>
   </section>
 
+  <section class="sec" aria-labelledby="h-dep" id="depoimentos">
+    <div class="sec-h"><span class="kicker">Consumidores</span><h2 id="h-dep"></h2><p id="dep-lede"></p></div>
+    <ol class="funil" id="dep-funil" aria-label="Como os depoimentos foram isolados"></ol>
+    <ol class="temas" id="dep-temas"></ol>
+    <p class="warn" id="dep-warn"></p>
+  </section>
+
   <section class="method" id="metodologia" aria-label="Metodologia">
     <details id="met-det">
       <summary><span class="pm" aria-hidden="true">+</span>Ver metodologia</summary>
@@ -101,6 +123,7 @@
 </main>
 
 <script id="bf-data" type="application/json">/*DATA*/</script>
+<script id="dep-data" type="application/json">/*DEPO*/</script>
 <script>
 (function(){
 const D=JSON.parse(document.getElementById('bf-data').textContent);
@@ -184,6 +207,24 @@ document.getElementById('vol-end').textContent=dm(V[V.length-1].d);
 const media=(D.total_ofertas/V.length).toFixed(1).replace('.',',');
 document.getElementById('h-vol').textContent=`Em média, ${media} ofertas por dia até agora`;
 
+/* depoimentos */
+const DP=JSON.parse(document.getElementById('dep-data').textContent);
+if(DP&&DP.temas&&DP.temas.length){
+  const nf=new Intl.NumberFormat('pt-PT'), F=DP.funil, T=DP.temas;
+  document.getElementById('h-dep').textContent=`Pouca gente fala da Black Friday; fala-se de preços e de onde comprar`;
+  document.getElementById('dep-lede').textContent=`Publicações de pessoas (não de lojas, marcas ou meios de comunicação) com sinal claro de serem escritas em Portugal, de ${dm(DP.janela.de)} a ${dm(DP.janela.ate)}. Encontrámos ${F.depoimentos} depoimentos sobre consumo, agrupados por tema.`+(DP.black_friday?' '+DP.black_friday:'');
+  document.getElementById('dep-funil').innerHTML=[
+    [F.unicos,'publicações em português'],
+    [F.compativeis,'compatíveis com Portugal'],
+    [F.ancorados,'com sinal claro de Portugal'],
+    [F.depoimentos,'depoimentos sobre consumo','hl']
+  ].map(([v,l,c])=>`<li class="${c||''}"><b class="num">${nf.format(v)}</b>${l}</li>`).join('');
+  document.getElementById('dep-temas').innerHTML=T.map(t=>`<li><span class="n num">${t.n}<small>${t.n===1?'publicação':'publicações'}</small></span><div>
+    <h3>${esc(t.tema)}</h3><p class="rs">${esc(t.resumo)}</p>
+    ${t.citacoes.map(c=>`<blockquote>“${esc(c.texto)}”<small>${esc(c.rede)} · ${dm(c.data)}</small></blockquote>`).join('')}</div></li>`).join('');
+  document.getElementById('dep-warn').textContent=`${Math.round(F.pct_excluidos)}% das publicações em português foram excluídas por terem sinal de outro país, sobretudo do Brasil. Os temas são contagens pequenas e o boicote ao Continente e à Galp vem quase todo de uma única conversa. Mostramos excertos sem o nome dos autores.`;
+} else document.getElementById('depoimentos').hidden=true;
+
 /* metodologia */
 const MET=[
  ['Fonte','Publicações públicas no Instagram, Facebook, X e sites de notícias, recolhidas pela pesquisa histórica do Buzzmonitor. Só entram publicações em português com preço em euros e sinais de Portugal (lojas, termos ou domínios portugueses).'],
@@ -192,6 +233,7 @@ const MET=[
  ['Categorias','Telemóveis, TVs, informática, áudio e relógios, consolas e jogos, casa e beleza. Publicações fora destas categorias (seguros, combustível, viagens) são descartadas.'],
  ['Desconto típico','A mediana dos descontos anunciados. Categorias com menos de 10 ofertas no período aparecem como "poucos dados". Na tabela semanal, valores com menos de 3 ofertas aparecem apagados.'],
  ['Lojas','Identificadas pelo nome citado na publicação. Publicações que citam várias lojas ficam sem loja.'],
+ ['Depoimentos','Recorte por exclusão: das publicações em português, retirámos as que têm sinal forte de outro país (Brasil, países africanos de língua portuguesa ou Espanha: moeda, lojas, cidades, vocabulário como "você" ou "celular") e mantivemos as ambíguas. Dentro delas, só contam como depoimento as que têm sinal claro de Portugal (cidades, lojas como Continente ou Worten, termos como "telemóvel"), são de pessoas e não de lojas ou meios de comunicação, falam de consumo e não são anúncios. A seleção final foi lida uma a uma. É um retrato da conversa pública, não uma amostra representativa dos consumidores.'],
  ['Limites','Os descontos são os anunciados e não foram verificados no site das lojas. O desconto pode ser calculado sobre um preço de referência alto. Poucas fontes concentram a maior parte das ofertas, o que limita a leitura do mercado.'],
 ];
 document.getElementById('method-dl').innerHTML=MET.map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join('');
