@@ -1,0 +1,142 @@
+{
+ "gerado_em": "2026-11-04",
+ "janela": {
+  "de": "20261001",
+  "ate": "20261103"
+ },
+ "funil": {
+  "unicos": 74414,
+  "excluidos": 51698,
+  "pct_excluidos": 69.5,
+  "exclusao_por_regiao": [
+   [
+    "BR",
+    51428
+   ],
+   [
+    "PALOP",
+    268
+   ],
+   [
+    "ES",
+    114
+   ]
+  ],
+  "compativeis": 22716,
+  "ancorados": 1938,
+  "depoimentos": 30
+ },
+ "black_friday": "Das 28 publicações de pessoas com sinal de Portugal que citam a Black Friday, quase todas são anúncios, publicidade de criadores de conteúdo ou dicas para lojas; nenhuma é um relato de compra.",
+ "temas": [
+  {
+   "tema": "Boicote ao Continente e à Galp",
+   "resumo": "Uma proposta de deixar de abastecer na Galp e de comprar no Continente durante dois dias, em protesto contra os preços, dividiu opiniões. Uns aderem ou já mudaram de loja; outros dizem que as empresas não definem os preços.",
+   "n": 12,
+   "de": "20261018",
+   "ate": "20261023",
+   "citacoes": [
+    {
+     "texto": "Entristece-me imenso que Portugal não tenha uma cultura forte de boicote. Imaginem ninguém abastecer na Galp durante 2 dias. Ninguém entrar num Continente durante 2 dias. Atacar onde sabemos que lhes dói, os lucros.",
+     "data": "20261018",
+     "rede": "X"
+    },
+    {
+     "texto": "E pq haveria de fazer boicote ao continente ou a outra qualquer? Faço boicote quando tem algo mais caro e vou comprar a outro lado... por acaso nao meto gasolina na galp mesmo pq é mais caro nao por ser a Galp.. mas ok",
+     "data": "20261018",
+     "rede": "X"
+    },
+    {
+     "texto": "Isso é que era de valor! Adeus Continente, Pingo Doce, Auchan. Eu já comecei!! App já removidas , como cliente só vou Mercadona que não chateia, zero descontos, tudo limpo, caixas sempre abertas. Tirando isso, mini-mercado local e está…",
+     "data": "20261018",
+     "rede": "X"
+    },
+    {
+     "texto": "nao vais abastecer na galp durante 2 dias, vais ao 3º quando ja estás na reserva. nao vais ao continente durante 2 dias, vais ao terceiro pq nao tens comida em casa. em que é q isso ajuda exatamente?",
+     "data": "20261018",
+     "rede": "X"
+    }
+   ]
+  },
+  {
+   "tema": "IVA zero e preço das consolas",
+   "resumo": "A campanha de dias sem IVA da Worten foi notada e comparada com o ano passado. Há queixas de que os preços das consolas subiram antes das promoções.",
+   "n": 5,
+   "de": "20261028",
+   "ate": "20261103",
+   "citacoes": [
+    {
+     "texto": "Com que então a PlayStation 5 está excluída da promoção dias sem IVA da Worten, engraçado, o ano passado qualquer consola estava incluída. 😁",
+     "data": "20261029",
+     "rede": "X"
+    },
+    {
+     "texto": "O ideal seria abaixarem os preços, tanto do jogo, quanto das consolas. As lojas oportunistas já aumentaram o preço(fnac, worten e outras). Aliás, alguém sabe de uma loja que venda as consola á um preço mais baixo? Ou então que ofereça a…",
+     "data": "20261103",
+     "rede": "X"
+    },
+    {
+     "texto": "a worten tá com IVA 0 em cartas btw",
+     "data": "20261030",
+     "rede": "X"
+    }
+   ]
+  },
+  {
+   "tema": "Encomendas e serviço nas lojas de eletrónica",
+   "resumo": "Quem encomendou no lançamento de jogos e acessórios acompanha prazos de entrega e levantamento em loja. Aparece também a queixa de que o serviço piora.",
+   "n": 5,
+   "de": "20261027",
+   "ate": "20261029",
+   "citacoes": [
+    {
+     "texto": "Os anos passam e o serviço da Worten piora. Não consigo entender. As pessoas fazem reclamações e há coisas que não mudam, por mais anos que passem!",
+     "data": "20261029",
+     "rede": "X"
+    },
+    {
+     "texto": "Eu escolhi levantar numa loja Worten aqui ao pé, para minimizar as chances de por algum motivo eu não estar em casa no preciso momento que lá fossem ou algo do género 😅. Até ver, continua como \"Expedido\".",
+     "data": "20261029",
+     "rede": "X"
+    }
+   ]
+  },
+  {
+   "tema": "Pagar às prestações e comprar recondicionado",
+   "resumo": "Para telemóveis e eletrónica, fala-se de pagamento a prestações sem juros e de equipamentos recondicionados como alternativa mais barata.",
+   "n": 4,
+   "de": "20261019",
+   "ate": "20261030",
+   "citacoes": [
+    {
+     "texto": "klarna. 1eur p dia worten, 10x sem juros , radio popular s juros, etc... etc... hoje em dia existem n de boas opções. Não é por aí que vem algum mal ao mundo ;)",
+     "data": "20261030",
+     "rede": "X"
+    },
+    {
+     "texto": "Os programas de recondicionados que hoje existem na Worten são mais que suficiente para toda a gente. um iPhone 15 Pro refurbished já é vendido na Worten por 689, um excelente preço para um telemóvel daquela capacidade.",
+     "data": "20261030",
+     "rede": "X"
+    }
+   ]
+  },
+  {
+   "tema": "Escolha do supermercado",
+   "resumo": "Comparações entre cadeias: há quem prefira o Lidl ou o Mercadona e quem fique pelo cartão e pelo cashback do Continente e do Pingo Doce.",
+   "n": 4,
+   "de": "20261026",
+   "ate": "20261103",
+   "citacoes": [
+    {
+     "texto": "continuo a preferir o lidl mas ao menos o continente e o pingo doce tem cash back decente",
+     "data": "20261103",
+     "rede": "X"
+    },
+    {
+     "texto": "A minha experiência foi no Pingo Doce, mas acredito que no Continente seja semelhante. Talvez para encotrar marcas intermédias se tenha que ir a outros retalhistas mais pequenos.",
+     "data": "20261101",
+     "rede": "X"
+    }
+   ]
+  }
+ ]
+}
