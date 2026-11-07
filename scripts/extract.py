@@ -41,7 +41,7 @@ def precos(t,lo,hi):
     return por,de
 KIT=re.compile(r'\bkit\b|\bcombo\b|\d\s*unidades',re.I)
 # posts que comparam modelos ("S25 Ultra vs S26 Ultra") misturam preços de produtos diferentes
-COMPARA=re.compile(r'\bvs\.?\s|\bversus\b|comparativo|qual vale mais|com troca|troca extra|na troca|trade.?in',re.I)  # inclui preços que dependem de entregar um aparelho usado
+COMPARA=re.compile(r'\bvs\.?\s|\bversus\b|comparativo|qual vale mais|com troca|troca extra|na troca|trade.?in|plano sempre novo',re.I)  # inclui preços que dependem de entregar um aparelho usado ou de aderir a um plano
 def extrair(posts,prods):
     out=[]
     comp=[(p,re.compile(p['inc'],re.I),re.compile(p['exc'],re.I)) for p in prods]
