@@ -85,7 +85,7 @@
   "categoria": "Informática",
   "query": "ipad",
   "inc": "ipad[^\\n]{0,20}?a16[^\\n]{0,40}?128\\s*gb|ipad\\s*11[^\\n]{0,10}?\\(?a16\\)?",
-  "exc": "capa|case|pel[íi]cula|teclado|caneta|pencil|usado|air|pro\\b",
+  "exc": "capa|case|pel[íi]cula|teclado|caneta|pencil|usado|air|pro\\b|256\\s*gb|512\\s*gb",
   "min": 2000,
   "max": 4200
  },
